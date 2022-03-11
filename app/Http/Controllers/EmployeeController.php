@@ -38,9 +38,9 @@ class EmployeeController extends Controller
         }
 
         $picture = $request->file('picture');
-        $safeImg = Str::random(10) . '.' . $picture->getEmployeeOriginalExtension();
+        $picture_name = Str::random(10) . '.' . $picture->getClientOriginalExtension();
 
-        $picture->move(public_path('uploads/employee'), $safeImg);
+        $picture->move(public_path('uploads/employee'), $picture_name);
 
         $Employee = Employee::create([
             'first_name' => $request->first_name,
@@ -50,7 +50,7 @@ class EmployeeController extends Controller
             'address' => $request->address,
             'passport_number' => $request->passport_number,
             'employee_category_id' => $request->employee_category_id,
-            'picture' => $safeImg,
+            'picture' => $picture_name,
             'joining_date' => $request->joining_date,
             'basic_salary' => $request->basic_salary,
             'dob' => $request->dob,
@@ -90,7 +90,6 @@ class EmployeeController extends Controller
             'address' => 'required',
             'passport_number' => 'required',
             'employee_category_id' => 'required',
-            'picture' => 'required',
             'joining_date' => 'required',
             'basic_salary' => 'required',
             'bio' => 'required',
@@ -120,10 +119,10 @@ class EmployeeController extends Controller
 
         if (!empty($request->picture)){
             $picture = $request->file('picture');
-            $updateImg = Str::random(10) . '.' . $picture->getEmployeeOriginalExtension();
+            $picture_name = Str::random(10) . '.' . $picture->getCLientOriginalExtension();
 
-            $picture->move(public_path('uploads/employee'), $updateImg);
-            $Employee->picture = $updateImg;
+            $picture->move(public_path('uploads/employee'), $picture_name);
+            $Employee->picture = $picture_name;
         }
 
         $Employee->save();

@@ -41,9 +41,9 @@ class ClientController extends Controller
         }
 
         $logo = $request->file('logo');
-        $safeName = Str::random(10) . '.' . $logo->getClientOriginalExtension();
+        $logo_name = Str::random(10) . '.' . $logo->getClientOriginalExtension();
 
-        $logo->move(public_path('uploads/logo'), $safeName);
+        $logo->move(public_path('uploads/client'), $logo_name);
 
         $Client = Client::create([
             'name' => $request->name,
@@ -54,7 +54,7 @@ class ClientController extends Controller
             'tax_number' => $request->tax_number,
             'client_category_id' => $request->client_category_id,
             'currency_id' => $request->currency_id,
-            'logo' => $safeName,
+            'logo' => $logo_name,
             'notes' => $request->notes,
             'focal_name' => $request->focal_name,
             'focal_phone_no' => $request->focal_phone_no,
@@ -133,10 +133,10 @@ class ClientController extends Controller
 
         if (!empty($request->logo)){
             $logo = $request->file('logo');
-            $safeName = Str::random(10) . '.' . $logo->getClientOriginalExtension();
+            $logo_name = Str::random(10) . '.' . $logo->getClientOriginalExtension();
 
-            $logo->move(public_path('uploads/logo'), $safeName);
-            $Client->logo = $safeName;
+            $logo->move(public_path('uploads/client'), $logo_name);
+            $Client->logo = $logo_name;
         }
 
         $Client->save();
