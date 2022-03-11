@@ -52,7 +52,7 @@ class ContractController extends Controller
 
                 $Job = Job::create([
                     'hours_in_day' => $detail['hours_in_day'],
-                    'contract_id' => 1,
+                    'contract_id' =>$contract_id,
                     'employee_category_id' => $detail['employee_category_id'],
                     'starts_at' => $detail['starts_at'],
                     'ends_at' => $detail['ends_at'],
@@ -72,7 +72,6 @@ class ContractController extends Controller
                     ]);
                 }
             }
-            die();
 
 
 
