@@ -84,17 +84,17 @@ class EmployeeController extends Controller
 
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email|unique:clients',
-            'phone_no' => 'required',
-            'address' => 'required',
-            'passport_number' => 'required',
-            'employee_category_id' => 'required',
-            'joining_date' => 'required',
-            'basic_salary' => 'required',
-            'bio' => 'required',
-            'dob' => 'required',
         ]);
+        //            'last_name' => 'required',
+//            'email' => 'required|email|unique:clients',
+//            'phone_no' => 'required',
+//            'address' => 'required',
+//            'passport_number' => 'required',
+//            'employee_category_id' => 'required',
+//            'joining_date' => 'required',
+//            'basic_salary' => 'required',
+//            'bio' => 'required',
+//            'dob' => 'required',
 
         if ($validator->fails()){
             return response()->json([

@@ -47,20 +47,24 @@ class ClientController extends Controller
 
         $Client = Client::create([
             'name' => $request->name,
-            'short_name' => $request->short_name,
-            'email' => $request->email,
-            'phone_no' => $request->phone_no,
-            'address' => $request->address,
-            'tax_number' => $request->tax_number,
-            'client_category_id' => $request->client_category_id,
-            'currency_id' => $request->currency_id,
-            'logo' => $logo_name,
-            'notes' => $request->notes,
-            'focal_name' => $request->focal_name,
-            'focal_phone_no' => $request->focal_phone_no,
-            'focal_email' => $request->focal_email,
-            'website' => $request->website,
         ]);
+//        'short_name' => $request->short_name,
+//            'email' => $request->email,
+//            'phone_no' => $request->phone_no,
+//            'address' => $request->address,
+//            'tax_number' => $request->tax_number,
+//            'client_category_id' => $request->client_category_id,
+//            'currency_id' => $request->currency_id,
+//            'logo' => $logo_name,
+//            'notes' => $request->notes,
+//            'focal_name' => $request->focal_name,
+//            'focal_phone_no' => $request->focal_phone_no,
+//            'focal_email' => $request->focal_email,
+//            'website' => $request->website,
+
+
+
+        
 //        $Client  =new Client;
 //        $Client->username = $request->username;
 //        $Client->email = $request->email;
