@@ -17,7 +17,7 @@ class Contract extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['start_date_format' , 'end_date_format', 'day_percentage'];
+    protected $appends = ['start_date_format', 'end_date_format', 'day_percentage', 'contract_status_labelled','contract_remaining_days'];
 
     public function jobs()
     {
@@ -29,7 +29,8 @@ class Contract extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function getStartDateFormatAttribute(){
+    public function getStartDateFormatAttribute()
+    {
         if (empty($this->starts_at)) {
             return '';
         } else {
@@ -37,7 +38,28 @@ class Contract extends Model
         }
     }
 
-    public function getEndDateFormatAttribute(){
+    public function getContractRemainingDaysAttribute()
+    {
+        if($this->starts_at==$this->ends_at)
+            return 1;
+       return  Carbon::parse($this->starts_at)->diffInDays(Carbon::parse($this->ends_at));
+    }
+    public function getContractStatusLabelledAttribute()
+    {
+        if ($this->contract_status == 'awaiting')
+            return '<label class="badge badge-secondary">Awaiting</label>';
+        else if ($this->contract_status == 'inprogress')
+            return '<label class="badge badge-info">In-progress</label>';
+        else if ($this->contract_status == 'completed')
+            return '<label class="badge badge-success">Completed</label>';
+        else if ($this->contract_status == 'cancelled')
+            return '<label class="badge badge-danger">Cancelled</label>';
+        else
+            return '<label class="badge badge-info">Undefined</label>';
+    }
+
+    public function getEndDateFormatAttribute()
+    {
         if (empty($this->ends_at)) {
             return '';
         } else {
@@ -45,14 +67,16 @@ class Contract extends Model
         }
     }
 
-    public function getDayPercentageAttribute(){
+    public function getDayPercentageAttribute()
+    {
+        return 'will_see_later';
 
-        $start = strtotime($this->starts_at);
+       /* $start = strtotime($this->starts_at);
         $end = strtotime($this->ends_at);
 
         $current = strtotime(now());
 
-        return (($current - $start) / ($end - $start)) * 100;
+        return (($current - $start) / ($end - $start)) * 100;*/
 
 //        $now = time(); // or your date as well
 //        $start_date = strtotime($this->starts_at);
