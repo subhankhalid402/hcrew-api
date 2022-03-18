@@ -18,7 +18,7 @@ class Client extends Model
 
 
     public function getImageUrlAttribute(){
-        return public_path('uploads/client') . '/' . $this->logo;
+        return asset('uploads/client') . '/' . $this->logo;
     }
 
     public function currency(){
