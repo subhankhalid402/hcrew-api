@@ -67,7 +67,7 @@ class EmployeeController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data' => Employee::with('employeeCategory')->get()
+            'data' => Employee::with('employee_category')->get()
         ]);
     }
 
@@ -148,9 +148,12 @@ class EmployeeController extends Controller
         if (request('term')) {
             $Employee->where(['name', 'Like', '%' . request('term') . '%'],[]);
         }
+        if (request('cat_id')){
+            $Employee->where('employee_category_id', '=' , request('cat_id'));
+        }
         return response()->json([
             'status' => true,
-            'data' => $Employee->where('employee_category_id', '=' , request('cat_id'))->orderBy('id', 'DESC')->get()
+            'data' => $Employee->orderBy('id', 'DESC')->get()
         ]);
     }
 }

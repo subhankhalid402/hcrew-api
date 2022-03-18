@@ -18,10 +18,10 @@ class Employee extends Model
 
 
     public function getImageUrlAttribute(){
-        return asset('public/uploads/employee') . '/' . $this->picture;
+        return asset('uploads/employee') . '/' . $this->picture;
     }
 
-    public function employeeCategory(){
+    public function employee_category(){
         return $this->belongsTo(EmployeeCategory::class);
     }
 }

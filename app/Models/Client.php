@@ -18,14 +18,14 @@ class Client extends Model
 
 
     public function getImageUrlAttribute(){
-        return asset('public/uploads/client') . '/' . $this->logo;
+        return public_path('uploads/client') . '/' . $this->logo;
     }
 
     public function currency(){
         return $this->belongsTo(Currency::class);
     }
 
-    public function clientCategory(){
+    public function client_category(){
         return $this->belongsTo(ClientCategory::class);
     }
 }

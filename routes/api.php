@@ -85,8 +85,10 @@ Route::prefix('/clients')->group(function(){
 
 Route::prefix('/contracts')->group(function(){
     Route::post('/store', [ContractController::class, 'store']);
-    Route::get('/all', [ContractController::class, 'all']);
+    Route::post('/all', [ContractController::class, 'all']);
     Route::get('/{id}/show', [ContractController::class,'show']);
     Route::post('/update', [ContractController::class,'update']);
     Route::post('/{id}/delete', [ContractController::class,'destroy']);
+    Route::post('/{id}/detail', [ContractController::class,'detail']);
+    Route::post('/search', [ContractController::class,'search']);
 });

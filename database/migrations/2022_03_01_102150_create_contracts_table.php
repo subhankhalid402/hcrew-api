@@ -18,7 +18,8 @@ class CreateContractsTable extends Migration
             $table->string('title');
             $table->date('starts_at')->nullable();
             $table->date('ends_at')->nullable();
-//            $table->foreignId('client_id')->constrained();
+            $table->foreignId('client_id')->constrained();
+            $table->foreignId('currency_id')->constrained();
             $table->string('contract_status')->nullable();
             $table->softDeletes();
             $table->timestamps();

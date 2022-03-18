@@ -64,7 +64,7 @@ class ClientController extends Controller
 
 
 
-        
+
 //        $Client  =new Client;
 //        $Client->username = $request->username;
 //        $Client->email = $request->email;
@@ -81,7 +81,7 @@ class ClientController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data' => Client::with('currency','clientCategory')->get()
+            'data' => Client::with('currency','client_category')->get()
         ]);
     }
 
