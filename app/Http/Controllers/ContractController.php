@@ -116,4 +116,12 @@ class ContractController extends Controller
 
     }
 
+    public function doughnut(){
+        $returnData = array();
+        $returnData['total_links'] = 20;
+        $returnData['type'] = 'completed';
+        $returnData['doughnut_bgColors'] = 'red';
+        return $returnData;
+    }
+
 }

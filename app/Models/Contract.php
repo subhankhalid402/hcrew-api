@@ -17,7 +17,7 @@ class Contract extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['start_date_format', 'end_date_format', 'day_percentage', 'contract_status_labelled','contract_remaining_days'];
+    protected $appends = ['start_date_format', 'end_date_format', 'contract_days_percentage', 'contract_status_labelled', 'contract_remaining_days'];
 
     public function jobs()
     {
@@ -40,22 +40,23 @@ class Contract extends Model
 
     public function getContractRemainingDaysAttribute()
     {
-        if($this->starts_at==$this->ends_at)
+        if ($this->starts_at == $this->ends_at)
             return 1;
-       return  Carbon::parse($this->starts_at)->diffInDays(Carbon::parse($this->ends_at));
+        return Carbon::parse($this->starts_at)->diffInDays(Carbon::parse($this->ends_at));
     }
+
     public function getContractStatusLabelledAttribute()
     {
         if ($this->contract_status == 'awaiting')
-            return '<label class="badge badge-secondary">Awaiting</label>';
+            return '<label class="badge bg-secondary">Awaiting</label>';
         else if ($this->contract_status == 'inprogress')
-            return '<label class="badge badge-info">In-progress</label>';
+            return '<label class="badge bg-info">In-progress</label>';
         else if ($this->contract_status == 'completed')
-            return '<label class="badge badge-success">Completed</label>';
+            return '<label class="badge bg-success">Completed</label>';
         else if ($this->contract_status == 'cancelled')
-            return '<label class="badge badge-danger">Cancelled</label>';
+            return '<label class="badge bg-danger">Cancelled</label>';
         else
-            return '<label class="badge badge-info">Undefined</label>';
+            return '<label class="badge bg-info">Undefined</label>';
     }
 
     public function getEndDateFormatAttribute()
@@ -67,16 +68,30 @@ class Contract extends Model
         }
     }
 
-    public function getDayPercentageAttribute()
+    public function getContractDaysPercentageAttribute()
     {
-        return 'will_see_later';
+        $start_date = Carbon::parse($this->starts_at);
+        $end_date = Carbon::parse($this->ends_at);
+        $today = Carbon::now();
+        $total_days = $start_date->diffInDays($end_date);
 
-       /* $start = strtotime($this->starts_at);
-        $end = strtotime($this->ends_at);
+        $total_remaining_days = $start_date->diffInDays($today);
 
-        $current = strtotime(now());
+        if ($start_date >= $end_date)
+            return 100;
 
-        return (($current - $start) / ($end - $start)) * 100;*/
+        $percentage = ($total_remaining_days / $total_days) * 100;
+
+        if ($percentage > 100)
+            return 100;
+
+        return number_format($percentage, 2);
+        /* $start = strtotime($this->starts_at);
+         $end = strtotime($this->ends_at);
+
+         $current = strtotime(now());
+
+         return (($current - $start) / ($end - $start)) * 100;*/
 
 //        $now = time(); // or your date as well
 //        $start_date = strtotime($this->starts_at);

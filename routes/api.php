@@ -91,4 +91,5 @@ Route::prefix('/contracts')->group(function(){
     Route::post('/{id}/delete', [ContractController::class,'destroy']);
     Route::post('/{id}/detail', [ContractController::class,'detail']);
     Route::post('/search', [ContractController::class,'search']);
+    Route::post('/doughnut', [ContractController::class,'doughnut']);
 });
