@@ -71,6 +71,14 @@ class EmployeeController extends Controller
         ]);
     }
 
+    public function detail(Request $request)
+    {
+        return response()->json([
+            'status' => true,
+            'data' => Employee::with('employee_category')->where('id' , $request->id)->get()
+        ]);
+    }
+
     public function show(Request $request)
     {
         return response()->json([

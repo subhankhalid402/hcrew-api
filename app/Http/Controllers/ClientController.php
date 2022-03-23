@@ -161,10 +161,18 @@ class ClientController extends Controller
         ]);
     }
 
-    public function search(){
+    public function detail(Request $request)
+    {
+        return response()->json([
+            'status' => true,
+            'data' => Client::with('currency','client_category')->where('id' , $request->id)->get()
+        ]);
+    }
+
+    public function search(Request $request){
         $Client = Client::query();
-        if (request('term')) {
-            $Client->where('name', 'Like', '%' . request('term') . '%');
+        if ($request->term) {
+            $Client->where('name', 'Like', '%' . $request->term . '%');
         }
         return response()->json([
             'status' => true,

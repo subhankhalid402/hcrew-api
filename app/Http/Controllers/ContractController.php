@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\SiteHelper;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use App\Models\Contract;
 use App\Models\Job;
 use App\Models\JobDetail;
+use Illuminate\Support\Facades\DB;
 
 class ContractController extends Controller
 {
@@ -116,11 +118,48 @@ class ContractController extends Controller
 
     }
 
+    public function attendance(Request $request){
+        $Contract = Contract::with('jobs', 'client')->where('id', $request->contract_id)->get();
+//        return $Contract;
+
+        foreach ($Contract as $contractDate)
+        $period = CarbonPeriod::create($contractDate->starts_at, $contractDate->ends_at);
+
+// Iterate over the period
+//        $array = [];
+        foreach ($period as $date) {
+            $array[$date->format('Y-m-d')] = $Contract;
+//            $array['date'] = $date->format('Y-m-d');
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $array
+        ]);
+    }
+
     public function doughnut(){
+//        return 100;
+//        $doughnut = Contract::selectRaw('COUNT(id) AS total_contract , contract_status')
+//            ->orderBy('total_contract')
+//            ->groupBy(DB::raw('contract_status'))
+//            ->get();
+
+//        return $doughnut;
+
+//        $newArray = array();
+//
+//        foreach ($doughnut AS $row) {
+//            $newArray['total_status'] = $row['total_status'];
+//            $newArray['type'] = $row['type'];
+//            $newArray['doughnut_bgColors'] = '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
+//            return $newArray;
+//        }
+
         $returnData = array();
-        $returnData['total_links'] = 20;
-        $returnData['type'] = 'completed';
-        $returnData['doughnut_bgColors'] = 'red';
+        $returnData['total_links'] = ["99", "16", "11", "10", "1"];
+        $returnData['type'] = ["rotator", "copier", "camouflage", "cloacking", "redirector"];
+        $returnData['doughnut_bgColors'] = ["#2C483A", "#28E4FB", "#8AFB10", "#142E5A", "#715B60"];
         return $returnData;
     }
 

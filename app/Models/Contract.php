@@ -42,7 +42,19 @@ class Contract extends Model
     {
         if ($this->starts_at == $this->ends_at)
             return 1;
-        return Carbon::parse($this->starts_at)->diffInDays(Carbon::parse($this->ends_at));
+//        return Carbon::parse($this->starts_at)->diffInDays(Carbon::parse($this->ends_at));
+        $start_date = Carbon::parse($this->starts_at);
+        $end_date = Carbon::parse($this->ends_at);
+        $today = Carbon::now();
+        $total_days = $start_date->diffInDays($end_date);
+
+        $total_remaining_days = $start_date->diffInDays($today);
+        $days =  $total_days - $total_remaining_days;
+
+        if ($days <= 0)
+            return 0;
+
+        return $days;
     }
 
     public function getContractStatusLabelledAttribute()
@@ -77,8 +89,10 @@ class Contract extends Model
 
         $total_remaining_days = $start_date->diffInDays($today);
 
-        if ($start_date >= $end_date)
+        if ($today >= $end_date)
             return 100;
+        if ($today < $start_date)
+            return 0;
 
         $percentage = ($total_remaining_days / $total_days) * 100;
 

@@ -53,6 +53,7 @@ Route::prefix('/employees')->group(function(){
     Route::post('/store', [EmployeeController::class, 'store']);
     Route::get('/all', [EmployeeController::class, 'all']);
     Route::get('/{id}/show', [EmployeeController::class,'show']);
+    Route::post('/{id}/detail', [EmployeeController::class,'detail']);
     Route::post('/update', [EmployeeController::class,'update']);
     Route::post('/{id}/delete', [EmployeeController::class,'destroy']);
     Route::post('/search', [EmployeeController::class, 'search']);
@@ -78,6 +79,7 @@ Route::prefix('/clients')->group(function(){
     Route::post('/store', [ClientController::class, 'store']);
     Route::get('/all', [ClientController::class, 'all']);
     Route::get('/{id}/show', [ClientController::class,'show']);
+    Route::post('/{id}/detail', [ClientController::class,'detail']);
     Route::post('/update', [ClientController::class,'update']);
     Route::post('/{id}/delete', [ClientController::class,'destroy']);
     Route::post('/search', [ClientController::class,'search']);
@@ -92,4 +94,5 @@ Route::prefix('/contracts')->group(function(){
     Route::post('/{id}/detail', [ContractController::class,'detail']);
     Route::post('/search', [ContractController::class,'search']);
     Route::post('/doughnut', [ContractController::class,'doughnut']);
+    Route::post('/{id}/attendance', [ContractController::class,'attendance']);
 });
