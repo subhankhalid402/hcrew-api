@@ -29,6 +29,10 @@ class Contract extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function currency(){
+        return $this->belongsTo(Currency::class);
+    }
+
     public function getStartDateFormatAttribute()
     {
         if (empty($this->starts_at)) {

@@ -10,6 +10,7 @@ use App\Http\Controllers\ClientCategoryController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\PaymentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -95,4 +96,8 @@ Route::prefix('/contracts')->group(function(){
     Route::post('/search', [ContractController::class,'search']);
     Route::post('/doughnut', [ContractController::class,'doughnut']);
     Route::post('/{id}/attendance', [ContractController::class,'attendance']);
+});
+
+Route::prefix('/payments')->group(function(){
+    Route::post('/payment', [PaymentController::class, 'payment']);
 });

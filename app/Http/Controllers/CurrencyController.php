@@ -13,6 +13,8 @@ class CurrencyController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'symbol' => 'required',
+            'position' => 'required',
         ]);
 
         if ($validator->fails()){
@@ -24,6 +26,8 @@ class CurrencyController extends Controller
 
        $Currency = Currency::create([
             'name' => $request->name,
+            'symbol' => $request->symbol,
+            'position' => $request->position,
         ]);
 
         return response()->json([
@@ -52,6 +56,8 @@ class CurrencyController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'symbol' => 'required',
+            'position' => 'required',
         ]);
 
         if ($validator->fails()){
@@ -64,6 +70,8 @@ class CurrencyController extends Controller
         $Currency = Currency::find($request->id);
 
         $Currency->name = $request->name;
+        $Currency->symbol = $request->symbol;
+        $Currency->position = $request->position;
 
         $Currency->save();
 

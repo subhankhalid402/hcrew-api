@@ -16,9 +16,9 @@ class JobDetail extends Model
 
     use SoftDeletes;
 
-//    public function job(){
-//        return $this->belongsTo(Job::class);
-//    }
+    public function job(){
+        return $this->belongsTo(Job::class);
+    }
 
     public function employee()
     {

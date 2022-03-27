@@ -55,4 +55,13 @@ class SiteHelper
         }
     }
 
+    public function reformatReadableDateNice($dateStr)
+    {
+        if (!empty($dateStr)) {
+            return Carbon::parse($dateStr)->format('d M, Y');
+        } else{
+            return false;
+        }
+    }
+
 }
