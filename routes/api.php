@@ -22,6 +22,15 @@ use App\Http\Controllers\PaymentController;
 |
 */
 
+Route::prefix('/auth')->group(function () {
+    Route::post('/login', '\App\Http\Controllers\AuthController@loginBackend');
+    Route::post('/register', '\App\Http\Controllers\AuthController@registerBackend');
+    Route::post('/forgot-password-check', 'App\Http\Controllers\AuthController@forgotPasswordCheck');
+    Route::post('/reset-password', 'App\Http\Controllers\AuthController@resetPassword');
+    Route::post('/account-setting-update', 'App\Http\Controllers\AuthController@accountSettingUpdate');
+
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

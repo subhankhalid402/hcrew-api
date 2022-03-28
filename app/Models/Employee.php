@@ -17,11 +17,16 @@ class Employee extends Model
     protected $appends = ['image_url'];
 
 
-    public function getImageUrlAttribute(){
-        return asset('uploads/employee') . '/' . $this->picture;
+    public function getImageUrlAttribute()
+    {
+        if ($this->picture)
+            return asset('uploads/employee') . '/' . $this->picture;
+        else
+            return asset('uploads/user.png');
     }
 
-    public function employee_category(){
+    public function employee_category()
+    {
         return $this->belongsTo(EmployeeCategory::class);
     }
 }
