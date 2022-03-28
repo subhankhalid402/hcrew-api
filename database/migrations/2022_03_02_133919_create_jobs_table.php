@@ -15,7 +15,7 @@ class CreateJobsTable extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contract_id')->constrained();
+            $table->foreignId('contract_id')->nullable()->constrained();
             $table->foreignId('employee_category_id')->nullable()->constrained();
             $table->time('starts_at')->nullable();
             $table->time('ends_at')->nullable();

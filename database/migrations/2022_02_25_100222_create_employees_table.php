@@ -17,10 +17,10 @@ class CreateEmployeesTable extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('passport_number')->nullable();
             $table->date('joining_date')->nullable();
-            $table->decimal('basic_salary')->default(0);
+            $table->decimal('basic_salary')->default(0)->nullable();
 //            $table->foreignId('countries_id')->constrained();
             $table->text('address')->nullable();
             $table->string('bio')->nullable();

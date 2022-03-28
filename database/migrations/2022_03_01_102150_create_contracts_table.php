@@ -16,10 +16,10 @@ class CreateContractsTable extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->date('starts_at')->nullable();
-            $table->date('ends_at')->nullable();
-            $table->foreignId('client_id')->constrained();
-            $table->foreignId('currency_id')->constrained();
+            $table->date('starts_at');
+            $table->date('ends_at');
+            $table->foreignId('client_id')->nullable()->constrained();
+            $table->foreignId('currency_id')->nullable()->constrained();
             $table->string('contract_status')->nullable();
             $table->text('notes')->nullable();
             $table->softDeletes();

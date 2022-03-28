@@ -11,6 +11,7 @@ use App\Models\Contract;
 use App\Models\Job;
 use App\Models\JobDetail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ContractController extends Controller
 {
@@ -24,16 +25,18 @@ class ContractController extends Controller
 //            return $has_double_shift;
 
 
-//            $validator = Validator::make($request->all(), [
-//                'name' => 'required',
-//            ]);
+            $validator = Validator::make($request->all(), [
+                'starts_at' => 'required',
+                'ends_at' => 'required',
+                'title' => 'required'
+            ]);
 
-//            if ($validator->fails()){
-//                return response()->json([
-//                    'status' => false,
-//                    'message' => $validator->errors()->first()
-//                ]);
-//            }
+            if ($validator->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first()
+                ]);
+            }
 
         $Contract = Contract::create([
             'title' => $request->title,

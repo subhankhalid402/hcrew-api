@@ -17,7 +17,7 @@ class CreateClientsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('short_name')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('phone_no')->nullable();
             $table->text('address')->nullable();
             $table->string('tax_number')->nullable();
@@ -27,7 +27,7 @@ class CreateClientsTable extends Migration
             $table->foreignId('currency_id')->constrained();
             $table->string('focal_name')->nullable();
             $table->string('focal_phone_no')->nullable();
-            $table->string('focal_email')->unique();
+            $table->string('focal_email')->nullable();
             $table->string('website')->nullable();
             $table->softDeletes();
             $table->timestamps();

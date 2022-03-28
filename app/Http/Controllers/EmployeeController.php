@@ -15,8 +15,8 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
 
-//        $validator = Validator::make($request->all(), [
-//            'first_name' => 'required',
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required',
 //            'last_name' => 'required',
 //            'email' => 'required|email|unique:clients',
 //            'phone_no' => 'required',
@@ -28,20 +28,22 @@ class EmployeeController extends Controller
 //            'basic_salary' => 'required',
 //            'bio' => 'required',
 //            'dob' => 'required',
-//        ]);
-//
-//        if ($validator->fails()){
-//            return response()->json([
-//                'status' => false,
-//                'message' => $validator->errors()->first()
-//            ]);
-//        }
+        ]);
+
+        if ($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
 
         $picture = $request->file('picture');
-        $picture_name = Str::random(10) . '.' . $picture->getClientOriginalExtension();
-
-        $picture->move(public_path('uploads/employee'), $picture_name);
-
+            if ($picture) {
+                $picture_name = Str::random(10) . '.' . $picture->getClientOriginalExtension();
+                $picture->move(public_path('uploads/employee'), $picture_name);
+            } else {
+                $picture_name = '';
+            }
         $Employee = Employee::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -75,7 +77,7 @@ class EmployeeController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data' => Employee::with('employee_category')->where('id' , $request->id)->get()
+            'data' => Employee::with('employee_category')->where('id', $request->id)->get()
         ]);
     }
 
@@ -125,7 +127,7 @@ class EmployeeController extends Controller
         $Employee->bio = $request->bio;
         $Employee->dob = $request->dob;
 
-        if (!empty($request->picture)){
+        if (!empty($request->picture)) {
             $picture = $request->file('picture');
             $picture_name = Str::random(10) . '.' . $picture->getCLientOriginalExtension();
 
@@ -151,13 +153,14 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function search(){
+    public function search()
+    {
         $Employee = Employee::query();
         if (request('term')) {
-            $Employee->where(['name', 'Like', '%' . request('term') . '%'],[]);
+            $Employee->where(['name', 'Like', '%' . request('term') . '%'], []);
         }
-        if (request('cat_id')){
-            $Employee->where('employee_category_id', '=' , request('cat_id'));
+        if (request('cat_id')) {
+            $Employee->where('employee_category_id', '=', request('cat_id'));
         }
         return response()->json([
             'status' => true,

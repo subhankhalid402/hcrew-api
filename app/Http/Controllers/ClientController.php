@@ -17,8 +17,8 @@ class ClientController extends Controller
     {
 //        return $request->file('image');
 
-//        $validator = Validator::make($request->all(), [
-//            'name' => 'required',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
 //            'short_name' => 'required',
 //            'email' => 'required|email|unique:clients',
 //            'phone_no' => 'required',
@@ -31,38 +31,40 @@ class ClientController extends Controller
 //            'focal_phone_no' => 'required',
 //            'focal_email' => 'required',
 //            'website' => 'required',
-//        ]);
-//
-//        if ($validator->fails()){
-//            return response()->json([
-//                'status' => false,
-//                'message' => $validator->errors()->first()
-//            ]);
-//        }
+        ]);
+
+        if ($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
 
         $logo = $request->file('logo');
-        $logo_name = Str::random(10) . '.' . $logo->getClientOriginalExtension();
-
-        $logo->move(public_path('uploads/client'), $logo_name);
+        if ($logo) {
+            $logo_name = Str::random(10) . '.' . $logo->getClientOriginalExtension();
+            $logo->move(public_path('uploads/client'), $logo_name);
+        }
+        else{
+            $logo_name = '';
+        }
 
         $Client = Client::create([
             'name' => $request->name,
+            'short_name' => $request->short_name,
+            'email' => $request->email,
+            'phone_no' => $request->phone_no,
+            'address' => $request->address,
+            'tax_number' => $request->tax_number,
+            'client_category_id' => $request->client_category_id,
+            'currency_id' => $request->currency_id,
+            'logo' => $logo_name,
+            'notes' => $request->notes,
+            'focal_name' => $request->focal_name,
+            'focal_phone_no' => $request->focal_phone_no,
+            'focal_email' => $request->focal_email,
+            'website' => $request->website,
         ]);
-//        'short_name' => $request->short_name,
-//            'email' => $request->email,
-//            'phone_no' => $request->phone_no,
-//            'address' => $request->address,
-//            'tax_number' => $request->tax_number,
-//            'client_category_id' => $request->client_category_id,
-//            'currency_id' => $request->currency_id,
-//            'logo' => $logo_name,
-//            'notes' => $request->notes,
-//            'focal_name' => $request->focal_name,
-//            'focal_phone_no' => $request->focal_phone_no,
-//            'focal_email' => $request->focal_email,
-//            'website' => $request->website,
-
-
 
 
 //        $Client  =new Client;
@@ -81,7 +83,7 @@ class ClientController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data' => Client::with('currency','client_category')->get()
+            'data' => Client::with('currency', 'client_category')->get()
         ]);
     }
 
@@ -135,7 +137,7 @@ class ClientController extends Controller
         $Client->focal_email = $request->focal_email;
         $Client->website = $request->website;
 
-        if (!empty($request->logo)){
+        if (!empty($request->logo)) {
             $logo = $request->file('logo');
             $logo_name = Str::random(10) . '.' . $logo->getClientOriginalExtension();
 
@@ -165,11 +167,12 @@ class ClientController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data' => Client::with('currency','client_category')->where('id' , $request->id)->get()
+            'data' => Client::with('currency', 'client_category')->where('id', $request->id)->get()
         ]);
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $Client = Client::query();
         if ($request->term) {
             $Client->where('name', 'Like', '%' . $request->term . '%');
