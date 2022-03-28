@@ -11,18 +11,18 @@ class CurrencyController extends Controller
     public function store(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'symbol' => 'required',
-            'position' => 'required',
-        ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->first()
-            ]);
-        }
+//        $validator = Validator::make($request->all(), [
+//            'name' => 'required',
+//            'symbol' => 'required',
+//            'position' => 'required',
+//        ]);
+//
+//        if ($validator->fails()){
+//            return response()->json([
+//                'status' => false,
+//                'message' => $validator->errors()->first()
+//            ]);
+//        }
 
        $Currency = Currency::create([
             'name' => $request->name,
@@ -54,18 +54,18 @@ class CurrencyController extends Controller
 
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'symbol' => 'required',
-            'position' => 'required',
-        ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->first()
-            ]);
-        }
+//        $validator = Validator::make($request->all(), [
+//            'name' => 'required',
+//            'symbol' => 'required',
+//            'position' => 'required',
+//        ]);
+//
+//        if ($validator->fails()){
+//            return response()->json([
+//                'status' => false,
+//                'message' => $validator->errors()->first()
+//            ]);
+//        }
 
         $Currency = Currency::find($request->id);
 

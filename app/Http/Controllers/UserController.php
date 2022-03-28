@@ -14,18 +14,18 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6'
-        ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->first()
-            ]);
-        }
+//        $validator = Validator::make($request->all(), [
+//            'username' => 'required',
+//            'email' => 'required|email|unique:users',
+//            'password' => 'required|min:6'
+//        ]);
+//
+//        if ($validator->fails()){
+//            return response()->json([
+//                'status' => false,
+//                'message' => $validator->errors()->first()
+//            ]);
+//        }
 
 //       $User = User::create([
 //            'username' => $request->username,
@@ -62,18 +62,18 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            'email' => 'required|email|unique:users',
-//            'password' => 'required|min:6'
-        ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->first()
-            ]);
-        }
+//        $validator = Validator::make($request->all(), [
+//            'username' => 'required',
+//            'email' => 'required|email|unique:users',
+////            'password' => 'required|min:6'
+//        ]);
+//
+//        if ($validator->fails()){
+//            return response()->json([
+//                'status' => false,
+//                'message' => $validator->errors()->first()
+//            ]);
+//        }
 
         $User = User::find($request->id);
 

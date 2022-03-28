@@ -17,28 +17,28 @@ class ClientController extends Controller
     {
 //        return $request->file('image');
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'short_name' => 'required',
-            'email' => 'required|email|unique:clients',
-            'phone_no' => 'required',
-            'address' => 'required',
-            'tax_number' => 'required',
-            'client_category_id' => 'required',
-            'currency_id' => 'required',
-            'logo' => 'required',
-            'focal_name' => 'required',
-            'focal_phone_no' => 'required',
-            'focal_email' => 'required',
-            'website' => 'required',
-        ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->first()
-            ]);
-        }
+//        $validator = Validator::make($request->all(), [
+//            'name' => 'required',
+//            'short_name' => 'required',
+//            'email' => 'required|email|unique:clients',
+//            'phone_no' => 'required',
+//            'address' => 'required',
+//            'tax_number' => 'required',
+//            'client_category_id' => 'required',
+//            'currency_id' => 'required',
+//            'logo' => 'required',
+//            'focal_name' => 'required',
+//            'focal_phone_no' => 'required',
+//            'focal_email' => 'required',
+//            'website' => 'required',
+//        ]);
+//
+//        if ($validator->fails()){
+//            return response()->json([
+//                'status' => false,
+//                'message' => $validator->errors()->first()
+//            ]);
+//        }
 
         $logo = $request->file('logo');
         $logo_name = Str::random(10) . '.' . $logo->getClientOriginalExtension();
@@ -96,28 +96,28 @@ class ClientController extends Controller
     public function update(Request $request)
     {
 //        return $request;
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'short_name' => 'required',
-            'email' => 'required',
-            'phone_no' => 'required',
-            'address' => 'required',
-            'tax_number' => 'required',
-            'client_category_id' => 'required',
-            'currency_id' => 'required',
-//            'logo' => 'required',
-            'focal_name' => 'required',
-            'focal_phone_no' => 'required',
-            'focal_email' => 'required',
-            'website' => 'required',
-        ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->first()
-            ]);
-        }
+//        $validator = Validator::make($request->all(), [
+//            'name' => 'required',
+//            'short_name' => 'required',
+//            'email' => 'required',
+//            'phone_no' => 'required',
+//            'address' => 'required',
+//            'tax_number' => 'required',
+//            'client_category_id' => 'required',
+//            'currency_id' => 'required',
+////            'logo' => 'required',
+//            'focal_name' => 'required',
+//            'focal_phone_no' => 'required',
+//            'focal_email' => 'required',
+//            'website' => 'required',
+//        ]);
+//
+//        if ($validator->fails()){
+//            return response()->json([
+//                'status' => false,
+//                'message' => $validator->errors()->first()
+//            ]);
+//        }
 
         $Client = Client::find($request->id);
 

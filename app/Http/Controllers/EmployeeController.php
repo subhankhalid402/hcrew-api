@@ -15,27 +15,27 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email|unique:clients',
-            'phone_no' => 'required',
-            'address' => 'required',
-            'passport_number' => 'required',
-            'employee_category_id' => 'required',
-            'picture' => 'required',
-            'joining_date' => 'required',
-            'basic_salary' => 'required',
-            'bio' => 'required',
-            'dob' => 'required',
-        ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->first()
-            ]);
-        }
+//        $validator = Validator::make($request->all(), [
+//            'first_name' => 'required',
+//            'last_name' => 'required',
+//            'email' => 'required|email|unique:clients',
+//            'phone_no' => 'required',
+//            'address' => 'required',
+//            'passport_number' => 'required',
+//            'employee_category_id' => 'required',
+//            'picture' => 'required',
+//            'joining_date' => 'required',
+//            'basic_salary' => 'required',
+//            'bio' => 'required',
+//            'dob' => 'required',
+//        ]);
+//
+//        if ($validator->fails()){
+//            return response()->json([
+//                'status' => false,
+//                'message' => $validator->errors()->first()
+//            ]);
+//        }
 
         $picture = $request->file('picture');
         $picture_name = Str::random(10) . '.' . $picture->getClientOriginalExtension();
@@ -90,9 +90,9 @@ class EmployeeController extends Controller
     public function update(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required',
-        ]);
+//        $validator = Validator::make($request->all(), [
+//            'first_name' => 'required',
+//        ]);
         //            'last_name' => 'required',
 //            'email' => 'required|email|unique:clients',
 //            'phone_no' => 'required',
@@ -104,12 +104,12 @@ class EmployeeController extends Controller
 //            'bio' => 'required',
 //            'dob' => 'required',
 
-        if ($validator->fails()){
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->first()
-            ]);
-        }
+//        if ($validator->fails()){
+//            return response()->json([
+//                'status' => false,
+//                'message' => $validator->errors()->first()
+//            ]);
+//        }
 
         $Employee = Employee::find($request->id);
 
