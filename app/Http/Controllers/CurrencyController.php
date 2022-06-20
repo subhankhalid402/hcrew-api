@@ -25,7 +25,7 @@ class CurrencyController extends Controller
 //        }
 
        $Currency = Currency::create([
-            'name' => $request->name,
+            'name' => $request->currency_name,
             'symbol' => $request->symbol,
             'position' => $request->position,
         ]);
@@ -69,7 +69,7 @@ class CurrencyController extends Controller
 
         $Currency = Currency::find($request->id);
 
-        $Currency->name = $request->name;
+        $Currency->name = $request->currency_name;
         $Currency->symbol = $request->symbol;
         $Currency->position = $request->position;
 

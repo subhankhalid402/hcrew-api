@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\PasswordReset;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -96,7 +98,7 @@ class AuthController extends Controller
                 'message' => $validator->errors()->first()
             ]);
         }
-        $role_id = Role::firstWhere('key',$request->role_key)->id;
+        $role_id = Role::firstWhere('key', $request->role_key)->id;
 
         $User = User::create([
             'first_name' => $request->first_name,
@@ -244,13 +246,15 @@ class AuthController extends Controller
         }
     }
 
-    public function accountSetting()
+    public function websiteSettingShow()
     {
-        return view('Auth.account_setting');
+        return response()->json([
+            'status' => true,
+            'data' => Setting::find(1)
+        ]);
     }
 
-    public function show()
-    {
+    public function accountInfoShow(){
         return response()->json([
             'status' => true,
             'data' => User::find(Auth::id())
@@ -261,9 +265,7 @@ class AuthController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'phone_no' => 'required'
+            'username' => 'required',
         ]);
 
 
@@ -274,23 +276,17 @@ class AuthController extends Controller
             ]);
         }
 
-        $User = User::where('id', $request->user_id)->first();
+        $User = User::find(Auth::id());
 
 
         if (!empty($User)) {
-            $User->first_name = $request->first_name;
-            $User->last_name = $request->last_name;
-            $User->phone_no = $request->phone_no;
-            $User->save();
-            // $User = User::where('id', $request->user_id)->first();
 
-            // $token = $User->createToken('Admin')->plainTextToken;
-            // return response()->json([
-            //     'status' => true,
-            //     'message' => 'Account Settings Updated successfully',
-            //     'token' => ['token' => $token],
-            //     'user' => $User
-            // ])->header('Cache-Control', 'private')->header('Authorization', $token);
+            if (!empty($request->password)) {
+                $User->password = Hash::make($request->password);
+            }
+            $User->username = $request->username;
+
+            $User->save();
 
             return response()->json([
                 'status' => true,
@@ -305,6 +301,65 @@ class AuthController extends Controller
         }
     }
 
+    public function websiteSettingUpdate(Request $request)
+    {
+//        return $request;
+        $logo = $request->file('logo');
+        $signature_logo = $request->file('signatureLogo');
+
+        $validator = Validator::make($request->all(), [
+            'company_name' => 'required',
+        ]);
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => FALSE,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        $Setting = Setting::find(1);
+
+
+        if (!empty($Setting)) {
+
+            $Setting->company_name = $request->company_name;
+            $Setting->address = $request->address;
+            $Setting->phone_no = $request->phone_no;
+            $Setting->phone_no_2 = $request->phone_no_2;
+            $Setting->email = $request->email;
+            $Setting->website = $request->website;
+
+            if($logo && $signature_logo){
+                $logo_name = Str::random(10) . '.' . $logo->getClientOriginalExtension();
+                $signature_logo_name = Str::random(10) . '.' . $signature_logo->getClientOriginalExtension();
+                $logo->move(public_path('uploads/website'), $logo_name);
+                $signature_logo->move(public_path('uploads/website'), $signature_logo_name);
+
+                $Setting->logo = $logo_name;
+                $Setting->signature = $signature_logo_name;
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Select Image'
+                ]);
+            }
+
+            $Setting->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Account Settings Updated successfully',
+                'user' => $Setting
+            ]);
+        } else {
+            return response()->json([
+                'status' => FALSE,
+                'message' => 'Invalid request'
+            ]);
+        }
+    }
 
 
     public function verify($user_id, Request $request)

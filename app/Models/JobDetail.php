@@ -17,11 +17,15 @@ class JobDetail extends Model
     use SoftDeletes;
 
     public function job(){
-        return $this->belongsTo(Job::class);
+        return $this->belongsTo(Job::class)->with('contract');
     }
 
     public function employee()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class)->with('employee_category');
+    }
+
+    public function payments(){
+        return $this->hasMany(Payment::class);
     }
 }

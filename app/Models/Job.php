@@ -23,7 +23,7 @@ class Job extends Model
     }
 
     public function job_details(){
-        return $this->hasMany(JobDetail::class)->with('employee');
+        return $this->hasMany(JobDetail::class)->with(['employee', 'payments']);
     }
 
     public function getStartAtFormatAttribute(){
@@ -32,6 +32,10 @@ class Job extends Model
 
     public function getEndAtFormatAttribute(){
         return Carbon::parse(date('Y-m-d') . $this->ends_at)->format('g:i A');
+    }
+
+    public function contract(){
+        return $this->belongsTo(Contract::class);
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\SiteHelper;
 use App\Models\Payment;
+use App\Notifications\InvoiceNotification;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
@@ -11,7 +12,9 @@ use App\Models\Contract;
 use App\Models\Job;
 use App\Models\JobDetail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
+use PDF;
 
 class ContractController extends Controller
 {
@@ -25,18 +28,18 @@ class ContractController extends Controller
 //            return $has_double_shift;
 
 
-            $validator = Validator::make($request->all(), [
-                'starts_at' => 'required',
-                'ends_at' => 'required',
-                'title' => 'required'
-            ]);
+        $validator = Validator::make($request->all(), [
+            'starts_at' => 'required',
+            'ends_at' => 'required',
+            'title' => 'required'
+        ]);
 
-            if ($validator->fails()){
-                return response()->json([
-                    'status' => false,
-                    'message' => $validator->errors()->first()
-                ]);
-            }
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
 
         $Contract = Contract::create([
             'title' => $request->title,
@@ -44,6 +47,7 @@ class ContractController extends Controller
             'starts_at' => SiteHelper::reformatDbDate($request->starts_at),
             'ends_at' => SiteHelper::reformatDbDate($request->ends_at),
             'contract_status' => $request->contract_status,
+            'notes' => $request->notes,
             'currency_id' => $request->currency_id,
         ]);
 
@@ -121,86 +125,71 @@ class ContractController extends Controller
 
     }
 
-    public function attendance(Request $request)
+    public function getAttendance($payment_date, $job_detail_id)
     {
-        $collection = Payment::with('job_detail')->whereHas('job_detail.job', function ($q) use ($request) {
-            $q->where('contract_id', $request->contract_id);
-        })->get();
+        $Payment = Payment::with('job_detail')->where('payment_date', $payment_date)->where('job_detail_id', $job_detail_id)->first();
 
-        $Contract = Contract::with('jobs', 'client', 'currency')->where('id', $request->contract_id)->get();
-//        return $Contract;
+        return $Payment;
+    }
 
+    public function checkAttendance($payment_date, $job_detail_id)
+    {
+        $Payment = Payment::where('job_detail_id', $job_detail_id)->whereDate('payment_date', $payment_date)->get();
+        return $Payment;
+    }
 
-        foreach ($Contract as $contractDate) {
-            $period = CarbonPeriod::create($contractDate->starts_at, $contractDate->ends_at);
-            $Currency = $contractDate->currency;
-            $Job = $contractDate->jobs;
+    public function deleteAttendance($payment_date, $job_detail_id, $end_date, $start_date)
+    {
+        $Payment = Payment::where('payment_date', '>', $end_date)->orwhere('payment_date', '<', $start_date)->where('job_detail_id', $job_detail_id)->delete();
 
-//            $job = [
-//                'job' => $Job,
-//                'date' => ''
-//            ];
+        return $Payment;
+    }
 
-            foreach ($Job as $newJ) {
-                //select * from payments where contact_id=1 & date=2022-02-03
-                // if(recordExist)
-                // $job = []
-                $job = [
-                    'rate_per_day' => $newJ->rate_per_day,
-                    'contract_id' => $newJ->contract_id,
-                    'double_shift_starts_hours' => $newJ->double_shift_starts_hours,
-                    'employee_category' => $newJ->employee_category,
-                    'has_double_shift' => $newJ->has_double_shift,
-                    'hours_in_day' => $newJ->hours_in_day,
-                    'job_details' => $newJ->job_details,
-                    'overtime_rate_per_hour' => $newJ->overtime_rate_per_hour,
-                    'date' => '',
-                ];
+    public function attendanceSave(Request $request)
+    {
+        $Contract = Contract::with('jobs', 'client', 'currency')->firstWhere('id', $request->contract_id);
 
-                $JobArray[] = $job;
+        $Periods = CarbonPeriod::create($Contract->starts_at, $Contract->ends_at);
+
+        $Currency = $Contract->currency;
+
+        foreach ($Contract->jobs as $Job) {
+            foreach ($Job->job_details as $JobDetail) {
+                foreach ($Periods as $Period) {
+                    $date = SiteHelper::reformatReadableDateNice($Period);
+                    $payment_date = Carbon::createFromFormat('d M, Y', $date)->format('Y-m-d');
+
+                    if (!empty($this->checkAttendance($payment_date, $JobDetail->id)->toArray())) {
+
+                    } else {
+                        Payment::create([
+                            'payment_date' => $payment_date,
+                            'hours_worked' => $Job->hours_in_day,
+                            'job_detail_id' => $JobDetail->id,
+                            'rate_per_day' => $Job->rate_per_day,
+                            'overtime_hours' => $Job->double_shift_starts_hours,
+                            'double_shift' => $Job->has_double_shift,
+                            'overtime_hours_rate' => $Job->overtime_rate_per_hour,
+                            'net_payment' => 0,
+                        ]);
+                    }
+                    $this->deleteAttendance($payment_date, $JobDetail->id, $Contract->ends_at, $Contract->starts_at);
+                    $AttendanceArray[] = $this->getAttendance($payment_date, $JobDetail->id);
+                }
             }
         }
 
-// Iterate over the period
-        $array = [];
-        foreach ($period as $date) {
-            $job['date'] = SiteHelper::reformatReadableDateNice($date);
-
-            $filtered = $collection->where('payment_date', Carbon::parse($date)->format('Y-m-d'));
-//            return $filtered;
-            foreach ($filtered as $key => $payment){
-                if (SiteHelper::reformatReadableDateNice($payment->payment_date) == SiteHelper::reformatReadableDateNice($date)){
-                    $payment = [
-                        'rate_per_day' => $payment->rate_per_day,
-                        'contract_id' => $newJ->contract_id,
-                        'double_shift_starts_hours' => $payment->overtime_hours,
-                        'employee_category' => $newJ->employee_category,
-                        'has_double_shift' => $payment->double_shift,
-                        'hours_in_day' => $payment->hours_worked,
-                        'overtime_rate_per_hour' => $payment->overtime_hours_rate,
-                        'job_details' => $payment->job_details,
-                        'date' => '',
-                    ];
-
-                    $array[SiteHelper::reformatReadableDateNice($date)] = $payment;
-                }
-                else{
-                    $JobArray[] = $job;
-                }
-            }
-//            return $JobArray;
+//        $DateArray = [];
 
 
-            $array[SiteHelper::reformatReadableDateNice($date)] = $JobArray;
-
-//            $array["payment"][SiteHelper::reformatReadableDateNice($date)] =  $filtered->all();
-//            $array["job"][SiteHelper::reformatReadableDateNice($date)] = $Contract;
-//            $array['date'] = $date->format('Y-m-d');
+        foreach ($AttendanceArray as $Attendance) {
+            $DateArray[SiteHelper::reformatReadableDateNice($Attendance->payment_date)][] = $Attendance;
         }
+
 
         return response()->json([
             'status' => true,
-            'data' => $array
+            'data' => collect($DateArray)->toArray()
         ]);
     }
 
@@ -228,6 +217,45 @@ class ContractController extends Controller
         $returnData['type'] = ["rotator", "copier", "camouflage", "cloacking", "redirector"];
         $returnData['doughnut_bgColors'] = ["#2C483A", "#28E4FB", "#8AFB10", "#142E5A", "#715B60"];
         return $returnData;
+    }
+
+    public function downloadPdf(Request $request)
+    {
+        $Contract = Contract::with(['jobs', 'currency', 'client'])->firstWhere('id', $request->id);
+        $sub_total = 0;
+        foreach ($Contract->jobs as $Job) {
+            foreach ($Job->job_details as $JobDetail) {
+                foreach ($JobDetail->payments as $JobPayment) {
+                    $sub_total += $JobPayment->subtotal_payment;
+                }
+            }
+        }
+
+        $Contract->total_price = $sub_total;
+
+        $file_name = 'INV-' . $request->id . '.pdf';
+
+        PDF::loadView('invoice.contract-invoice', ['data' => $Contract], [], [
+            'title' => 'Another Title',
+            'margin_top' => 0
+        ])->save(public_path() . '/uploads/invoice_pdf/contract_invoice/' . $file_name);
+
+        $invoiceMailData = [
+            'to_name' => $Contract->title,
+            'to_email' => $Contract->client->email,
+            'subject' => 'Work Invoice by SUMSOLS Corporation',
+            'file_name' => $file_name,
+            'file_path' => public_path() . '/uploads/invoice_pdf/contract_invoice/' . $file_name,
+            'invoice_public_url' => env('BASE_URL') . 'invoices/' . $request->id . '/public-view'
+        ];
+        Notification::route('mail', $invoiceMailData['to_email'])
+            ->notify(new InvoiceNotification($invoiceMailData));
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Invoice Send Successfully'
+        ]);
+
     }
 
 }

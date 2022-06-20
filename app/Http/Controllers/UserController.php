@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Utils;
@@ -13,7 +15,6 @@ class UserController extends Controller
 {
     public function store(Request $request)
     {
-
 //        $validator = Validator::make($request->all(), [
 //            'username' => 'required',
 //            'email' => 'required|email|unique:users',
@@ -32,10 +33,11 @@ class UserController extends Controller
 //            'email' => $request->email,
 //            'password' => Hash::make($request->password)
 //        ]);
-        $User  =new User;
+        $User  = new User;
         $User->username = $request->username;
         $User->email = $request->email;
         $User->password = Hash::make($request->password);
+        $User->role_id = $request->role_id;
         $User->save();
 
         return response()->json([
@@ -48,7 +50,7 @@ class UserController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data' => User::all()
+            'data' => User::with('role')->get()
         ]);
     }
 
@@ -79,6 +81,7 @@ class UserController extends Controller
 
         $User->username = $request->username;
         $User->email = $request->email;
+        $User->role_id = $request->role_id;
 
         if (!empty($request->password)) {
             $User->password =  Hash::make($request->password);
@@ -98,6 +101,28 @@ class UserController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Record Deleted Successfully'
+        ]);
+    }
+
+    public function getRole(){
+        return response()->json([
+            'status' => true,
+            'data' => Role::all()
+        ]);
+    }
+
+    public function accountSettingUpdate(Request $request){
+        $User = User::find(Auth::id());
+        if (!empty($request->password)) {
+            $User->password =  Hash::make($request->password);
+        }
+        $User->username = $request->username;
+
+        $User->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Account Update successfully'
         ]);
     }
 }

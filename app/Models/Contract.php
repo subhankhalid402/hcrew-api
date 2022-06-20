@@ -17,7 +17,7 @@ class Contract extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['start_date_format', 'end_date_format', 'contract_days_percentage', 'contract_status_labelled', 'contract_remaining_days'];
+    protected $appends = ['start_date_format', 'end_date_format', 'contract_days_percentage', 'contract_status_labelled', 'contract_remaining_days', 'setting'];
 
     public function jobs()
     {
@@ -104,30 +104,8 @@ class Contract extends Model
             return 100;
 
         return number_format($percentage, 2);
-        /* $start = strtotime($this->starts_at);
-         $end = strtotime($this->ends_at);
-
-         $current = strtotime(now());
-
-         return (($current - $start) / ($end - $start)) * 100;*/
-
-//        $now = time(); // or your date as well
-//        $start_date = strtotime($this->starts_at);
-//        $end_date = strtotime($this->ends_at);
-//        $datediff =  $end_date - $start_date;
-//
-//        $total_days = round($datediff / (60 * 60 * 24));
-
-//        $start = Carbon::parse($this->starts_at)->timestamp;
-//
-//        $end = Carbon::parse($this->ends_at)->timestamp;
-//
-//        $timespan = $end - $start;
-////        return $timespan;
-//        $current = Carbon::now()->timestamp - $start;
-//
-//        $progress = $current / $timespan;
-//
-//        return  (1 - $progress) * 100;
+    }
+    public function getSettingAttribute(){
+        return Setting::find(1);
     }
 }

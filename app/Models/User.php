@@ -47,4 +47,8 @@ class User extends Authenticatable
     public function getFormattedCreatedAtDatetimeAttribute(){
         return Carbon::parse($this->created_at)->format('d M, Y');
     }
+
+    public function role(){
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
 }

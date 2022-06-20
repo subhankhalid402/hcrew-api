@@ -11,6 +11,6 @@ class Payment extends Model
     protected $guarded = [];
 
     public function job_detail(){
-        return $this->belongsTo(JobDetail::class)->with('job');
+        return $this->belongsTo(JobDetail::class)->with('job')->with('employee');
     }
 }

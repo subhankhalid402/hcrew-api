@@ -13,13 +13,13 @@ class Client extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $guarded = [];
+    protected $guarded  = [];
     protected $appends = ['image_url'];
 
 
     public function getImageUrlAttribute(){
         if ($this->logo)
-            return asset('uploads/client') . '/' . $this->logo;
+            return env('BASE_URL'). 'public/uploads/client/' . $this->logo;
         else
             return asset('uploads/user.png');
     }
