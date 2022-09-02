@@ -25,8 +25,6 @@ class ContractController extends Controller
             $has_double_shift = $request->has_double_shift;
         }
 
-//            return $has_double_shift;
-
 
         $validator = Validator::make($request->all(), [
             'starts_at' => 'required',
@@ -52,7 +50,6 @@ class ContractController extends Controller
         ]);
 
         $contract_id = $Contract->id;
-//           return $contract_id;
 
 
         foreach ($request->job_details as $index => $detail) {
@@ -148,14 +145,16 @@ class ContractController extends Controller
     public function attendanceSave(Request $request)
     {
         $Contract = Contract::with('jobs', 'client', 'currency')->firstWhere('id', $request->contract_id);
-
         $Periods = CarbonPeriod::create($Contract->starts_at, $Contract->ends_at);
 
         $Currency = $Contract->currency;
-
+        $AttendanceArray = [];
+        $total_payment = 0;
         foreach ($Contract->jobs as $Job) {
             foreach ($Job->job_details as $JobDetail) {
                 foreach ($Periods as $Period) {
+                    $job_payment = $Job->rate_per_day + $Job->overtime_rate_per_hour;
+                    $total_payment += $job_payment;
                     $date = SiteHelper::reformatReadableDateNice($Period);
                     $payment_date = Carbon::createFromFormat('d M, Y', $date)->format('Y-m-d');
 
@@ -179,8 +178,7 @@ class ContractController extends Controller
             }
         }
 
-//        $DateArray = [];
-
+        $DateArray = [];
 
         foreach ($AttendanceArray as $Attendance) {
             $DateArray[SiteHelper::reformatReadableDateNice($Attendance->payment_date)][] = $Attendance;
@@ -189,29 +187,13 @@ class ContractController extends Controller
 
         return response()->json([
             'status' => true,
-            'data' => collect($DateArray)->toArray()
+            'data' => collect($DateArray)->toArray(),
+            'total_payment' => $total_payment
         ]);
     }
 
     public function doughnut()
     {
-//        return 100;
-//        $doughnut = Contract::selectRaw('COUNT(id) AS total_contract , contract_status')
-//            ->orderBy('total_contract')
-//            ->groupBy(DB::raw('contract_status'))
-//            ->get();
-
-//        return $doughnut;
-
-//        $newArray = array();
-//
-//        foreach ($doughnut AS $row) {
-//            $newArray['total_status'] = $row['total_status'];
-//            $newArray['type'] = $row['type'];
-//            $newArray['doughnut_bgColors'] = '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
-//            return $newArray;
-//        }
-
         $returnData = array();
         $returnData['total_links'] = ["99", "16", "11", "10", "1"];
         $returnData['type'] = ["rotator", "copier", "camouflage", "cloacking", "redirector"];

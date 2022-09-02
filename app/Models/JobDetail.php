@@ -13,6 +13,7 @@ class JobDetail extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $appends = ['total_net_payment'];
 
     use SoftDeletes;
 
@@ -27,5 +28,9 @@ class JobDetail extends Model
 
     public function payments(){
         return $this->hasMany(Payment::class);
+    }
+
+    public function getTotalNetPaymentAttribute(){
+        return $this->payments->sum('net_payment');
     }
 }

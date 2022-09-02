@@ -77,7 +77,7 @@ class EmployeeController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data' => Employee::with('employee_category')->where('id', $request->id)->get()
+            'data' => Employee::with('employee_category')->with('job_details.job.contract')->where('id', $request->id)->first()
         ]);
     }
 

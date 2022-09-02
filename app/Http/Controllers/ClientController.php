@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
@@ -165,9 +166,11 @@ class ClientController extends Controller
 
     public function detail(Request $request)
     {
+        $Client = Client::with(['currency', 'client_category', 'contracts'])->where('id', $request->id)->first();
+
         return response()->json([
             'status' => true,
-            'data' => Client::with('currency', 'client_category')->where('id', $request->id)->get()
+            'data' => $Client
         ]);
     }
 

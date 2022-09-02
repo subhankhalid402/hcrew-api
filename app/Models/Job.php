@@ -24,6 +24,7 @@ class Job extends Model
 
     public function job_details(){
         return $this->hasMany(JobDetail::class)->with(['employee', 'payments']);
+        //yahan hi with na lgaya kro. ye extra data ata hai. jaisy mein abi lga rha hon waisy .(dot) lga k next relation laa skty hoty ok sir
     }
 
     public function getStartAtFormatAttribute(){

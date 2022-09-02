@@ -19,4 +19,8 @@ class EmployeeCategory extends Model
     {
         return Carbon::parse($this->created_at)->format('d M, Y');
     }
+
+    public function employees(){
+        return $this->hasMany(Employee::class);
+    }
 }

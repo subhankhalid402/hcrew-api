@@ -275,7 +275,6 @@
                             </td>
                         </tr>
                         <tr>
-                        <tr>
                             <td>
                                 <p>Email: [{{$data->email}}]</p>
                             </td>
@@ -293,16 +292,35 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="empty-td"></td>
-                        </tr>
+                       <tr>
+                           <td class="empty-td"></td>
+                       </tr>
                         <tr>
                             <td>
-                                <p>Notes : [{!! $data->customer_notes !!}]</p>
+                                <p>Notes: [{{ strip_tags(htmlspecialchars_decode($data->customer_notes)) }}]</p>
                             </td>
                         </tr>
                         </tbody>
                     </table>
+                    {{--                    <table class="maintable">--}}
+                    {{--                        <thead>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <th>--}}
+                    {{--                                <h4>Quotation Notes:</h4>--}}
+                    {{--                            </th>--}}
+                    {{--                        </tr>--}}
+                    {{--                        </thead>--}}
+                    {{--                        <tbody>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <td class="empty-td"></td>--}}
+                    {{--                        </tr>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <td>--}}
+                    {{--                                <p>Notes : [{!! $data->customer_notes !!}]</p>--}}
+                    {{--                            </td>--}}
+                    {{--                        </tr>--}}
+                    {{--                        </tbody>--}}
+                    {{--                    </table>--}}
                 </div>
             </div>
             <div style="clear: both"></div>
@@ -352,32 +370,33 @@
 
             <div class="client-info-wrapper">
                 <div class="client-info-left">
-{{--                    <table class="maintable">--}}
-{{--                        <thead>--}}
-{{--                        <tr>--}}
-{{--                            <th colspan="2">--}}
-{{--                                <h4 class="client-text">Tax:</h4>--}}
-{{--                            </th>--}}
-{{--                        </tr>--}}
-{{--                        </thead>--}}
-{{--                        <tbody>--}}
-{{--                        <tr>--}}
-{{--                            <td>--}}
-{{--                                <p>GST</p>--}}
-{{--                            </td>--}}
-{{--                            <td>--}}
-{{--                                <p> 17%</p>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
-{{--                        </tbody>--}}
-{{--                    </table>--}}
+                    {{--                    <table class="maintable">--}}
+                    {{--                        <thead>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <th colspan="2">--}}
+                    {{--                                <h4 class="client-text">Tax:</h4>--}}
+                    {{--                            </th>--}}
+                    {{--                        </tr>--}}
+                    {{--                        </thead>--}}
+                    {{--                        <tbody>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <td>--}}
+                    {{--                                <p>GST</p>--}}
+                    {{--                            </td>--}}
+                    {{--                            <td>--}}
+                    {{--                                <p> 17%</p>--}}
+                    {{--                            </td>--}}
+                    {{--                        </tr>--}}
+                    {{--                        </tbody>--}}
+                    {{--                    </table>--}}
                     <br>
                     <br>
                     <div class="signature">
-                        <h4>Signature: <span style="border-bottom: 1px solid #000"><img src="{{$data->setting->signature_url}}" class="w-100" alt=""></span></h4>
-{{--                        <h4>--}}
-{{--                            Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>_________________________</span>--}}
-{{--                        </h4>--}}
+                        <h4>Signature: <span style="border-bottom: 1px solid #000"><img
+                                    src="{{$data->setting->signature_url}}" class="w-100" alt=""></span></h4>
+                        {{--                        <h4>--}}
+                        {{--                            Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>_________________________</span>--}}
+                        {{--                        </h4>--}}
                     </div>
                 </div>
                 <div class="client-info-right">
@@ -424,5 +443,6 @@
             <!--End of subpage-->
         </div>
     </div>
+</div>
 </body>
 </html>

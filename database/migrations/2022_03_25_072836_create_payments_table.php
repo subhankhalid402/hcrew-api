@@ -19,12 +19,12 @@ class CreatePaymentsTable extends Migration
             $table->date('payment_date')->nullable();
             $table->integer('hours_worked')->nullable();
             $table->double('rate_per_day')->nullable();
-            $table->decimal('subtotal_payment', [9 ,2]);
+            $table->decimal('subtotal_payment', '9' ,'2')->default(0);
             $table->boolean('double_shift')->nullable();
             $table->integer('overtime_hours')->nullable();
             $table->double('overtime_hours_rate')->nullable();
-            $table->decimal('overtime_payment', [9 ,2]);
-            $table->decimal('net_payment', [9 ,2]);
+            $table->decimal('overtime_payment', '9' ,'2')->default(0);
+            $table->decimal('net_payment', '9' ,'2')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

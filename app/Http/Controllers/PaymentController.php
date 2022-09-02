@@ -11,8 +11,6 @@ class PaymentController extends Controller
 {
     public function payment(Request $request)
     {
-//        $Payment = Payment::where('')
-//        return $request;
         $payment_date = Carbon::createFromFormat('d M, Y', $request->payment_date)->format('Y-m-d');
         foreach ($request->attendance_details as $Attendance) {
             $Payment = Payment::whereDate('payment_date', $payment_date)->where('id', $Attendance['payment_id'])->first();
@@ -29,6 +27,7 @@ class PaymentController extends Controller
             $Payment->overtime_hours = $overtime_hours;
             $Payment->double_shift = $Attendance['double_shift'];
             $Payment->overtime_hours_rate = $Attendance['overtime_hours_rate'];
+            $Payment->sub_total = $Attendance['sub_total'];
             $Payment->net_payment = $net_payment;
             $Payment->save();
         }

@@ -12,6 +12,11 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpenseHeadController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\IncomeHeadController;
+use App\Http\Controllers\IncomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +46,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('auth/setting/show', 'App\Http\Controllers\AuthController@websiteSettingShow');
     Route::get('auth/account-info-show', 'App\Http\Controllers\AuthController@accountInfoShow');
+
+    Route::prefix('/dashboard')->group(function () {
+        Route::get('/', [DashboardController::class, 'countTotal']);
+        Route::get('/bar-chart', [DashboardController::class, 'barChart']);
+        Route::get('/pie-chart', [DashboardController::class, 'pieChart']);
+        Route::get('/income-pie-chart', [DashboardController::class, 'incomePieChart']);
+        Route::get('/donut-chart', [DashboardController::class, 'donutChart']);
+        Route::get('/recent-activity', [DashboardController::class, 'recentActivities']);
+    });
 
     Route::prefix('/users')->group(function () {
         Route::get('/get-roles', [UserController::class, 'getRole']);
@@ -129,6 +143,38 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{id}/delete', [QuotationController::class, 'destroy']);
         Route::post('quotation-detail/{id}/delete', [QuotationController::class, 'quotationDetailDestroy']);
         Route::post('send-email', [QuotationController::class, 'sendEmail']);
+    });
+
+    Route::prefix('/expense-heads')->group(function () {
+        Route::get("/", [ExpenseHeadController::class, 'all']);
+        Route::post("/store", [ExpenseHeadController::class, 'store']);
+        Route::get("/{id}/show", [ExpenseHeadController::class, 'show']);
+        Route::post("/update", [ExpenseHeadController::class, 'update']);
+        Route::post("/{id}/delete", [ExpenseHeadController::class, 'delete']);
+    });
+
+    Route::prefix('/expenses')->group(function () {
+        Route::get("/", [ExpenseController::class, 'all']);
+        Route::post("/store", [ExpenseController::class, 'store']);
+        Route::get("/{id}/show", [ExpenseController::class, 'show']);
+        Route::post("/update", [ExpenseController::class, 'update']);
+        Route::post("/{id}/delete", [ExpenseController::class, 'delete']);
+    });
+
+    Route::prefix('/income-heads')->group(function () {
+        Route::get("/", [IncomeHeadController::class, 'all']);
+        Route::post("/store", [IncomeHeadController::class, 'store']);
+        Route::get("/{id}/show", [IncomeHeadController::class, 'show']);
+        Route::post("/update", [IncomeHeadController::class, 'update']);
+        Route::post("/{id}/delete", [IncomeHeadController::class, 'delete']);
+    });
+
+    Route::prefix('/incomes')->group(function () {
+        Route::get("/", [IncomeController::class, 'all']);
+        Route::post("/store", [IncomeController::class, 'store']);
+        Route::get("/{id}/show", [IncomeController::class, 'show']);
+        Route::post("/update", [IncomeController::class, 'update']);
+        Route::post("/{id}/delete", [IncomeController::class, 'delete']);
     });
 
 });

@@ -225,7 +225,7 @@
                         </div>
                     </td>
                     <td align="right">
-                        <p class="invoice">QUOTATION</p>
+                        <p class="invoice">Contract</p>
                         <br>
                         <br>
                         <div class="quatition-info">
@@ -307,7 +307,7 @@
             <div style="clear: both"></div>
             <br>
             <div class="contract-title-wrapper">
-                <h3>Construction Materials:</h3>
+                <h3>Invoice Detail:</h3>
             </div>
             <table class="maintable">
                 <thead>
@@ -324,10 +324,12 @@
                 <tr>
                     <td class="w-60">1</td>
                     <td class="w-520">
-                        <p id="notes">{{$data->notes}}</p>
+{{--                        <p id="notes">{{ strip_tags(htmlspecialchars_decode($data->notes)) }}</p>--}}
+                        <p id="notes">Employees</p>
                     </td>
                     <td class="w-110">
-                        <p>{{amount_formatted($data->currency, $data->total_price)}}</p>
+                        <p>10</p>
+{{--                        <p>{{amount_formatted($data->currency, $data->total_price)}}</p>--}}
                     </td>
                 </tr>
                 </tbody>

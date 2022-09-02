@@ -16,3 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::prefix('/incomes')->group(function () {
+    Route::get('/income-report', 'App\Http\Controllers\IncomeController@incomeFilterReport');
+});
+
+Route::prefix('/expenses')->group(function () {
+    Route::get('/expense-report', 'App\Http\Controllers\ExpenseController@expenseFilterReport');
+});

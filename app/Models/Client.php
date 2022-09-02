@@ -31,4 +31,8 @@ class Client extends Model
     public function client_category(){
         return $this->belongsTo(ClientCategory::class);
     }
+
+    public function contracts(){
+        return $this->hasMany(Contract::class);
+    }
 }

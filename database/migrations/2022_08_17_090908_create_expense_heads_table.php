@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuotationDetailsTable extends Migration
+class CreateExpenseHeadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateQuotationDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('quotation_details', function (Blueprint $table) {
+        Schema::create('expense_heads', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quotation_id')->constrained();
-            $table->date('from_date');
-            $table->date('to_date');
-            $table->text('description')->nullable();
-            $table->decimal('amount', '9' ,'2')->default(0);
+
+            $table->string('name');
+            $table->text('notes')->nullable();
+            $table->foreignId('created_by')->constrained('users', 'id');
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateQuotationDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quotation_details');
+        Schema::dropIfExists('expense_heads');
     }
 }

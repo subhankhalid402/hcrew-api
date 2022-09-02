@@ -27,6 +27,24 @@ class SiteHelper
         }
     }
 
+    public static function reformatDate($date)
+    {
+        if (!empty($date)) {
+            return Carbon::createFromFormat('Y-m-d H:i:s', "{$date} 00:00:00");
+        } else {
+            return NULL;
+        }
+    }
+
+    public static function reformatReadableMonthNice($date)
+    {
+        if (!empty($date)) {
+            return Carbon::parse($date)->format('M/Y');
+        } else {
+            return false;
+        }
+    }
+
     public static function reformatReadableDateTime($datetimeStr)
     {
 
@@ -59,7 +77,7 @@ class SiteHelper
     {
         if (!empty($dateStr)) {
             return Carbon::parse($dateStr)->format('d M, Y');
-        } else{
+        } else {
             return false;
         }
     }

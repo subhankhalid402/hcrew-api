@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use PDF;
+
 class QuotationController extends Controller
 {
     public function store(Request $request)
@@ -140,7 +141,7 @@ class QuotationController extends Controller
         $Quotation = Quotation::where(['id' => $request->id])->delete();
         $QuotationDetail = QuotationDetail::where(['quotation_id' => $request->id])->get();
 
-        foreach($QuotationDetail as $Detail){
+        foreach ($QuotationDetail as $Detail) {
             $Detail->where(['quotation_id' => $request->id])->delete();
         }
 
@@ -150,16 +151,15 @@ class QuotationController extends Controller
         ]);
     }
 
-    public function sendEmail(Request $request){
+    public function sendEmail(Request $request)
+    {
         $Quotation = Quotation::with('quotation_details')->find($request->id);
-
         $sub_total = 0;
         foreach ($Quotation->quotation_details as $QuotationDetail) {
-                    $sub_total += $QuotationDetail['amount'];
+            $sub_total += $QuotationDetail['amount'];
         }
 
         $Quotation->sub_total = $sub_total;
-
         $file_name = 'QUT-INV-' . $request->id . '.pdf';
 
         PDF::loadView('invoice.quotaion-invoice', ['data' => $Quotation], [], [
