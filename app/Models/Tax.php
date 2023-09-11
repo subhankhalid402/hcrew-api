@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\SiteHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,6 +22,6 @@ class Tax extends Model
 
     public function getAmountFormatterAttribute()
     {
-        return $this->amount + 0;
+        return SiteHelper::amountFormatter($this->amount);
     }
 }

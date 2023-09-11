@@ -7,7 +7,7 @@ use App\Models\Attachment;
 use App\Models\Expense;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -16,7 +16,7 @@ class ExpenseController extends Controller
 
     public function all()
     {
-        $Expenses = Expense::orderByDesc('id')->get();
+        $Expenses = Expense::with('expense_head')->orderByDesc('id')->get();
         return response()->json([
             'status' => true,
             'data' => $Expenses
@@ -38,11 +38,12 @@ class ExpenseController extends Controller
         foreach ($request->amount as $key => $amount) {
             if ($amount) {
 
-              $Expense =  Expense::create([
+                $Expense = Expense::create([
                     'date' => SiteHelper::reformatDbDate($request->date),
                     'expense_head_id' => $request->expense_head_id[$key],
                     'amount' => $request->amount[$key],
                     'employee_id' => $request->employee_id[$key],
+//                    'contract_id' => $request->contract_id[$key],
                     'notes' => $request->notes[$key],
                     'created_by' => 1,
                 ]);
@@ -60,7 +61,8 @@ class ExpenseController extends Controller
                         'file_name' => $picture_name,
                         'type' => $type,
                         'object' => 'Expense',
-                        'object_id' => $Expense->id
+                        'object_id' => $Expense->id,
+                        'context' => 'expense'
                     ]);
                 }
 
@@ -69,20 +71,99 @@ class ExpenseController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Record saved successfully'
+            'message' => 'Expense saved successfully'
         ]);
     }
 
-    public function delete(Request $request)
+    public function show(Request $request)
+    {
+        return response()->json([
+            'status' => true,
+            'data' => Expense::with(['expense_head', 'attachment'])->find($request->id)
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'date' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        foreach ($request->amount as $key => $amount) {
+            if ($amount) {
+
+                $Expense = Expense::find($request->expense_id);
+                $Expense->update([
+                    'date' => SiteHelper::reformatDbDate($request->date),
+                    'expense_head_id' => $request->expense_head_id[$key],
+                    'amount' => $request->amount[$key],
+                    'employee_id' => $request->employee_id[$key],
+                    'notes' => $request->notes[$key],
+                    'created_by' => 1,
+                ]);
+
+                if (isset($request->attachment[$key])) {
+
+                    //delete previous image if has any
+                    if ($Expense->attachment) {
+                        if (File::exists(public_path('uploads/expense-attachment/'), $Expense->attachment->file_name)) {
+                            File::delete("public/uploads/expense-attachment/" . $Expense->attachment->file_name);
+                        }
+                    }
+
+                    $picture = $request->file('attachment')[$key];
+                    $picture_name = '';
+                    if ($picture) {
+                        $type = $picture->getClientOriginalExtension();
+                        $picture_name = Str::random(10) . '.' . $type;
+                        $picture->move(public_path('uploads/expense-attachment'), $picture_name);
+                    }
+
+//                    update or create file here
+                    if ($Expense->attachment) {
+                        $Expense->attachment->update([
+                            'file_name' => $picture_name,
+                            'type' => $type,
+                            'object' => 'Expense',
+                            'object_id' => $Expense->id,
+                            'context' => 'expense'
+                        ]);
+                    } else {
+                        Attachment::create([
+                            'file_name' => $picture_name,
+                            'type' => $type,
+                            'object' => 'Expense',
+                            'object_id' => $Expense->id,
+                            'context' => 'expense'
+                        ]);
+                    }
+                }
+
+            }
+        }
+
+        return response()->json(['status' => true,
+            'message' => 'Expense saved successfully']);
+    }
+
+    public
+    function delete(Request $request)
     {
         Expense::where(['id' => $request->id])->delete();
         return response()->json([
             'status' => true,
-            'message' => 'Record Deleted Successfully'
+            'message' => 'Expense Deleted Successfully'
         ]);
     }
 
-    public function expenseFilterReport(Request $request)
+    public
+    function expenseFilterReport(Request $request)
     {
         $from_date = SiteHelper::reformatDbDate(Str::replace("'\'", '', $request->from_date));
         $to_date = SiteHelper::reformatDbDate(Str::replace("'\'", '', $request->to_date));

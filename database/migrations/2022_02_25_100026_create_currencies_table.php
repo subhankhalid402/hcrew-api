@@ -17,7 +17,7 @@ class CreateCurrenciesTable extends Migration
             $table->id();
             $table->string('name');
             $table->enum('status',[1,0])->default(1);
-            $table->string('currency_symbol')->nullable();
+            $table->string('symbol')->nullable();
             $table->string('position')->nullable();
             $table->softDeletes();
             $table->timestamps();

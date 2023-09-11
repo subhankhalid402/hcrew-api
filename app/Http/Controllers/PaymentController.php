@@ -26,8 +26,8 @@ class PaymentController extends Controller
             $Payment->rate_per_day = $Attendance['rate_per_day'];
             $Payment->overtime_hours = $overtime_hours;
             $Payment->double_shift = $Attendance['double_shift'];
-            $Payment->overtime_hours_rate = $Attendance['overtime_hours_rate'];
-            $Payment->sub_total = $Attendance['sub_total'];
+            $Payment->overtime_payment = $Attendance['overtime_hours_rate'];
+            $Payment->subtotal_payment = $Attendance['subtotal_payment'];
             $Payment->net_payment = $net_payment;
             $Payment->save();
         }

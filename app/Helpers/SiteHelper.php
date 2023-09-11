@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Models\CollectionCenter;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -73,13 +72,18 @@ class SiteHelper
         }
     }
 
-    public function reformatReadableDateNice($dateStr)
+    public static function reformatReadableDateNice($dateStr)
     {
         if (!empty($dateStr)) {
             return Carbon::parse($dateStr)->format('d M, Y');
         } else {
             return false;
         }
+    }
+
+    public static function amountFormatter($amount, $decimalPlaces = 2)
+    {
+        return number_format($amount, $decimalPlaces, '.', ',');
     }
 
 }

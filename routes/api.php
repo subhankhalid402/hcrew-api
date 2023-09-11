@@ -34,8 +34,6 @@ Route::prefix('/auth')->group(function () {
     Route::post('/register', '\App\Http\Controllers\AuthController@registerBackend');
     Route::post('/forgot-password-check', 'App\Http\Controllers\AuthController@forgotPasswordCheck');
     Route::post('/reset-password', 'App\Http\Controllers\AuthController@resetPassword');
-    Route::post('/account-setting-update', 'App\Http\Controllers\AuthController@accountSettingUpdate');
-    Route::post('/website-setting-update', 'App\Http\Controllers\AuthController@websiteSettingUpdate');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -44,6 +42,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
 
+    Route::post('auth/account-setting-update', 'App\Http\Controllers\AuthController@accountSettingUpdate');
+    Route::post('auth/website-setting-update', 'App\Http\Controllers\AuthController@websiteSettingUpdate');
     Route::get('auth/setting/show', 'App\Http\Controllers\AuthController@websiteSettingShow');
     Route::get('auth/account-info-show', 'App\Http\Controllers\AuthController@accountInfoShow');
 
@@ -121,6 +121,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/contracts')->group(function () {
         Route::post('/store', [ContractController::class, 'store']);
         Route::post('/all', [ContractController::class, 'all']);
+        Route::post('/get-contract', [ContractController::class, 'getContract']);
         Route::get('/{id}/show', [ContractController::class, 'show']);
         Route::post('/update', [ContractController::class, 'update']);
         Route::post('/{id}/delete', [ContractController::class, 'destroy']);
@@ -138,11 +139,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/quotations')->group(function () {
         Route::post('/store', [QuotationController::class, 'store']);
         Route::get('/all', [QuotationController::class, 'all']);
+        Route::get('/previous-clients', [QuotationController::class, 'previousClients']);
         Route::get('/{id}/show', [QuotationController::class, 'show']);
         Route::post('/update', [QuotationController::class, 'update']);
         Route::post('/{id}/delete', [QuotationController::class, 'destroy']);
         Route::post('quotation-detail/{id}/delete', [QuotationController::class, 'quotationDetailDestroy']);
         Route::post('send-email', [QuotationController::class, 'sendEmail']);
+        Route::post('{id}/attach-delete', [QuotationController::class, 'attachmentDestroy']);
     });
 
     Route::prefix('/expense-heads')->group(function () {

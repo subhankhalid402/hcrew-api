@@ -1,25 +1,9 @@
 <!DOCTYPE html>
-<!-- saved from url=(0108)http://localhost:8000/report-print/2124900004?header=true&footer=true&electronically_verified=true&tests=6_0 -->
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Mauzoun QT2021MMDDNN Client</title>
+    <title>Sale Invoice</title>
     <style>
-        @font-face {
-            font-family: 'Arialmt';
-            src: url('vendor/mpdf/ttfonts/arial-mt/arialmt.ttf');
-        }
-
-        @font-face {
-            font-family: 'Cambria';
-            src: url('vendor/mpdf/ttfonts/cambria/Cambria.ttf');
-        }
-
-        @font-face {
-            font-family: 'Helvetica';
-            src: url('vendor/mpdf/ttfonts/Helvetica/Helvetica.ttf');
-        }
-
         body {
             width: 100%;
             /*height: 100%;*/
@@ -27,7 +11,7 @@
             padding: 0;
             margin-left: -20px;
             background-color: #fff;
-            font: 9pt "Helvetica";
+            font: 9pt 'arial', sans-serif;
         }
 
         * {
@@ -35,7 +19,7 @@
             -moz-box-sizing: border-box;
             /*font-family: 'Arialmt';*/
             /*font-family: 'Cambria';*/
-            font-family: 'Helvetica';
+            font-family: 'arial', sans-serif;
             font-weight: 900;
             font-size: 12px !important;
         }
@@ -62,9 +46,10 @@
         table {
             width: 100%;
             line-height: 16pt;
-            text-align: left;
+            /*text-align: left;*/
             /*border-spacing: 0;*/
-            /*border-collapse: collapse;*/
+            border-collapse: collapse;
+            text-align: start;
         }
 
         .maintable {
@@ -72,33 +57,26 @@
         }
 
         .maintable th {
-            /*border: 1px solid #000;*/
-            line-height: 10px;
-            /*font-weight: 500;*/
-            text-align: left;
-            padding: 8px;
-            background-color: #5d7657;
-            color: #fff;
-            font-family: "Helvetica", sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 11pt;
+            /*border-top: 1px solid #000 !important;*/
+            border-bottom: 1px solid #000 !important;
         }
 
-        /*.client-text{*/
-        /*    !*padding: 150px !important;*!*/
-        /*    !*margin-bottom: 5px !important;*!*/
-        /*    !*font-weight: 800;*!*/
-        /*    font-size: 24px !important;*/
-
-        /*}*/
+        .maintable th {
+            line-height: 10px;
+            color: #000000;
+            font-family: "arialmt", sans-serif;
+            font-style: normal;
+            text-decoration: none;
+            font-size: 11pt !important;
+            font-weight: bold !important;
+            padding-bottom: 8px !important;
+        }
 
         .maintable td {
             /*border: 1px solid #000;*/
+            border-bottom: 1px solid #ccc;
             padding-left: 8px;
-            background-color: #f9f1dd;
-            font-family: "Helvetica", sans-serif;
+            font-family: "arialmt", sans-serif;
             font-style: normal;
             font-weight: normal;
             text-decoration: none;
@@ -106,20 +84,14 @@
             /*text-align: left;*/
         }
 
-        .client-info-wrapper {
-            /*display: flex;*/
-            width: 100%;
-            /*justify-content: space-between;*/
-        }
-
-        .client-info-left {
-            width: 40%;
-            float: left;
-        }
-
-        .client-info-right {
-            width: 50%;
-            float: right;
+        p {
+            margin: 0 !important;
+            color: black;
+            font-family: 'arial', sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 10pt !important;
         }
 
         .text-right {
@@ -130,316 +102,312 @@
             text-align: left !important;
         }
 
-        .m-0 {
-            margin-top: 0px !important;
-            margin-bottom: 0px !important;
-        }
-
-        .text-right {
-            text-align: right;
-        }
 
         .text-center {
-            text-align: center;
+            text-align: center !important;
+        }
+
+
+        h5 {
+            margin-top: 0px !important;
+            margin-bottom: 5px !important;
+        }
+
+        .purchase-order-td p {
+            margin-bottom: 10px !important;
+        }
+
+        .purchase {
+            font-size: 35px !important;
+        }
+
+        hr {
+            width: 59% !important;
+            text-align: right;
+            border: 1px dotted #cccccc;
+            float: right;
+        }
+
+        h3 {
+            margin: 0 !important;
+        }
+
+        .pur-order {
+            margin-top: 30px !important;
+            margin-bottom: 30px !important;
+        }
+
+        .fw-700 {
+            font-weight: bold !important;
         }
 
         .footer {
-            width: 900px;
-            margin-top: 100px !important;
+            margin-top: 40px !important;
+            margin-bottom: 40px !important;
+            border-top: 1px solid #000000;
+            padding-top: 30px !important;
         }
 
-        p {
-            margin: 0px !important;
-            color: black;
-            font-family: Helvetica, serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 10pt !important;
+        .footer .w-40 {
+            width: 40% !important;
         }
 
-
-        ol li {
-            font-weight: 100;
-        }
-
-        .fs-10 {
-            font-size: 10px !important;
-        }
-
-        .w-110 {
-            width: 110px;
-        }
-
-        .w-100 {
-            width: 150px !important;
-        }
-
-        .w-60 {
-            width: 60px !important;
-        }
-
-        .w-520 {
-            width: 520px !important;
-        }
-
-        .invoice {
-            font-size: 20px !important;
-            text-align: right !important;
-        }
-
-        .contract-title {
-            font-size: 40px !important;
-            border-bottom: 3px solid #9c27b0;
-            margin-top: 60px !important;
-            margin-bottom: 60px !important;
-        }
-
-        .empty-td {
-            height: 20px !important;
-            background-color: #fff !important;
+        .footer .br-left {
+            border-left: 1px solid #000000;
+            padding-left: 12px !important;
         }
     </style>
 </head>
 <body>
-
-@php
-    function amount_formatted($currency, $amount){
-    if ($currency['position'] == 'left'){
-        return $currency['symbol'] . ' ' . round($amount, 2);
-    }else{
-        return round($amount , 2) . ' ' . $currency['symbol'];
-    }
-}
-
-@endphp
 <div class="book">
     <div class="page">
         <div class="subpage">
-            <table>
-                <tbody>
-                <tr>
-                    <td>
-                        <img src="{{$data->setting->logo_url}}" class="w-100">
-                        <br>
-                        <br>
-                        <div class="company-info">
-                            <p>Company Name: [{{$data->setting->company_name}}]</p>
-                            <p>Address: [{{$data->setting->address}}]</p>
-                            <p>Phone No: [{{$data->setting->phone_no}}]</p>
-                            <p>Email: [{{$data->setting->email}}] | Website: [{{$data->setting->website}}]</p>
-                        </div>
-                    </td>
-                    <td align="right">
-                        <p class="invoice">QUOTATION</p>
-                        <br>
-                        <br>
-                        <div class="quatition-info">
-                            <p>Qutotation No: [{{$data->quotation_no}}]</p>
-                            <p>Reference No: [{{$data->reference_no}}]</p>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <br>
-            <br>
-            <div class="client-info-wrapper">
-                <div class="client-info-left">
-                    <table class="maintable">
-                        <thead>
-                        <tr>
-                            <th>
-                                <h4 class="client-text">Quotation Information:</h4>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="empty-td"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Name: [{{$data->name}}]</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Address: [{{$data->address}}]</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Contact No: [{{$data->phone_no}}]</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Email: [{{$data->email}}]</p>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="client-info-right">
-                    <table class="maintable">
-                        <thead>
-                        <tr>
-                            <th>
-                                <h4>Quotation Notes:</h4>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                       <tr>
-                           <td class="empty-td"></td>
-                       </tr>
-                        <tr>
-                            <td>
-                                <p>Notes: [{{ strip_tags(htmlspecialchars_decode($data->customer_notes)) }}]</p>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    {{--                    <table class="maintable">--}}
-                    {{--                        <thead>--}}
-                    {{--                        <tr>--}}
-                    {{--                            <th>--}}
-                    {{--                                <h4>Quotation Notes:</h4>--}}
-                    {{--                            </th>--}}
-                    {{--                        </tr>--}}
-                    {{--                        </thead>--}}
-                    {{--                        <tbody>--}}
-                    {{--                        <tr>--}}
-                    {{--                            <td class="empty-td"></td>--}}
-                    {{--                        </tr>--}}
-                    {{--                        <tr>--}}
-                    {{--                            <td>--}}
-                    {{--                                <p>Notes : [{!! $data->customer_notes !!}]</p>--}}
-                    {{--                            </td>--}}
-                    {{--                        </tr>--}}
-                    {{--                        </tbody>--}}
-                    {{--                    </table>--}}
-                </div>
-            </div>
-            <div style="clear: both"></div>
-            <br>
-            <div class="contract-title-wrapper">
-                <h3>Construction Materials:</h3>
-            </div>
-            <table class="maintable">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>From Date</th>
-                    <th>To Date</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="empty-td" colspan="5"></td>
-                </tr>
-                @php $count = 0; @endphp
-                @foreach($data->quotation_details as $quotation_detail)
-                    @php $count++; @endphp
+            <div class="header">
+                <table>
+                    <tbody>
                     <tr>
-                        <td class="w-60">{{$count}}</td>
-                        <td class="w-110">
-                            <p id="notes">{{$quotation_detail->from_date_formatted}}</p>
+                        <td>
+                            <div
+                                style="font-size: 2px; padding-top:10px">@php echo str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', QrCode::size(100)->generate(env('BASE_URL') . 'public/uploads/invoice_pdf/quotation_invoice/QUT-INV-' . $data->id . '.pdf')); @endphp
+                            </div>
                         </td>
-                        <td class="w-110">
-                            <p id="notes">{{$quotation_detail->to_date_formatted}}</p>
-                        </td>
-                        <td class="w-320">
-                            <p id="notes">{!! $quotation_detail->description !!}</p>
-                        </td>
-
-                        <td class="w-110">
-                            <p>{{amount_formatted($data->currency, $quotation_detail->amount)}}</p>
+                        <td align="right">
+                            <img src="{{$data->setting->logo_url}}" alt="" width="100">
                         </td>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
 
+            <div class="pur-order">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td align="left" style="width: 50%; margin-top: 20%;">
+                            <p class="purchase" style="margin-bottom: 20px !important;">QUOTATION</p>
+                            <br>
+                            <table>
+                                <tr>
+                                    <td>
+                                        {{$data->name}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{$data->address}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        TRN:
+                                    </td>
+                                    <td>
+                                        232342342412
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Email:
+                                    </td>
+                                    <td>
+                                        {{$data->email}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Phone No:
+                                    </td>
+                                    <td>
+                                        {{$data->phone_no}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Requested by:
+                                    </td>
+                                    <td>
+                                        {{ $data->requested_by ?? '' }}
+                                    </td>
+                                </tr>
+
+
+                            </table>
+                        </td>
+                        <td style="width: 50%;" align="right">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <p>{{$data->setting->company_name}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>{{$data->setting->address}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Tax Number: <p>{{$data->setting->tax_number}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>{{$data->created_at}}</p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <br>
             <br>
-
-            <div class="client-info-wrapper">
-                <div class="client-info-left">
-                    {{--                    <table class="maintable">--}}
-                    {{--                        <thead>--}}
-                    {{--                        <tr>--}}
-                    {{--                            <th colspan="2">--}}
-                    {{--                                <h4 class="client-text">Tax:</h4>--}}
-                    {{--                            </th>--}}
-                    {{--                        </tr>--}}
-                    {{--                        </thead>--}}
-                    {{--                        <tbody>--}}
-                    {{--                        <tr>--}}
-                    {{--                            <td>--}}
-                    {{--                                <p>GST</p>--}}
-                    {{--                            </td>--}}
-                    {{--                            <td>--}}
-                    {{--                                <p> 17%</p>--}}
-                    {{--                            </td>--}}
-                    {{--                        </tr>--}}
-                    {{--                        </tbody>--}}
-                    {{--                    </table>--}}
-                    <br>
-                    <br>
-                    <div class="signature">
-                        <h4>Signature: <span style="border-bottom: 1px solid #000"><img
-                                    src="{{$data->setting->signature_url}}" class="w-100" alt=""></span></h4>
-                        {{--                        <h4>--}}
-                        {{--                            Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>_________________________</span>--}}
-                        {{--                        </h4>--}}
-                    </div>
-                </div>
-                <div class="client-info-right">
-                    <table class="maintable">
-                        <thead>
+            <br>
+            <br>
+            <div>
+                <table class="maintable">
+                    <thead>
+                    <tr>
+                        <th class="text-left">Sr#</th>
+                        <th class="text-left">Description</th>
+                        <th class="text-right">Quantity</th>
+                        <th class="text-right">Unit Price</th>
+                        <th class="text-right">Tax</th>
+                        <th class="text-right">Amount AED</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @php $count = 1; @endphp
+                    @foreach($data->quotation_details as $quotation_detail)
                         <tr>
-                            <th colspan="2">
-                                <h4>Amount Due:</h4>
-                            </th>
+                            <td style="width: 7%">
+                                {{ $count++ }}
+                            </td>
+                            <td style="width: 30%">
+                                {!! $quotation_detail->description !!}
+                            </td>
+                            <td class="text-right">
+                                {{$quotation_detail->quantity}}
+                            </td>
+                            <td class="text-right">
+                                {{$quotation_detail->unit_price}}
+                            </td>
+                            <td class="text-right">
+                                {{$quotation_detail->vat}} %
+                            </td>
+                            <td class="text-right">
+                                {{$quotation_detail->amount}}
+                            </td>
                         </tr>
-                        </thead>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td align="right" style="width: 70%">
+                            <p>SUB TOTAL</p>
+                        </td>
+                        <td style="width: 30%" class="text-right">
+                            <p>
+                                {{$data->sub_total}}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="width: 70%">
+                            <p>DISCOUNT</p>
+                        </td>
+                        <td style="width: 30%" class="text-right">
+                            <p>
+                                {{$data->discount_amount}}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="width: 70%">
+                            <p>TOTAL TAX ON PURCHASES </p>
+                        </td>
+                        <td style="width: 30%" class="text-right">
+                            <p>
+                                {{ $data->quotation_details->sum('vat_amount') }}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="width: 70%">
+                            <h3 style="font-size: 16px;">TOTAL AED</h3>
+                        </td>
+                        <td style="width: 30%" class="text-right">
+                            <h3 style="font-size: 16px;">
+                                {{$data->total_amount_formatted}}
+                            </h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <htmlpagefooter name="page-footer">
+                <div class="footer">
+                    <p style="font-size: 20px !important;margin-bottom: 10px !important;">MORE DETAILS</p>
+                    <table>
                         <tbody>
                         <tr>
-                            <td>
-                                <p>Subtotal</p>
+                            <td class="w-40">
+                                <p>Bank Account Detail:</p>
+                                <p>Bank: Emirates NBD Bank PJSC</p>
+                                <p>Account No: 101 451 802 620 1</p>
+                                <p>IBAN: AE 450 260 001 014 518 026 201</p>
+                                <p>Swift: EBILAEAD</p>
+                                <p>Account: White Horizon Technical Works LLC</p>
                             </td>
-                            <td>
-                                <p>{{amount_formatted($data->currency, $data->sub_total)}}</p>
+                            <td class="br-left">
+                                <p class="fw-700">Attention</p>
+                                <p class="fw-700">Telephone</p>
+                                <p>
+                                    {{$data->setting->phone_no}}
+                                </p>
                             </td>
-                        </tr>
-                        {{--                        <tr>--}}
-                        {{--                            <td>--}}
-                        {{--                                <p>Tax @ Total</p>--}}
-                        {{--                            </td>--}}
-                        {{--                            <td>--}}
-                        {{--                                <p>$2860</p>--}}
-                        {{--                            </td>--}}
-                        {{--                        </tr>--}}
-                        <tr>
-                            <td>
-                                <p>Total</p>
-                            </td>
-                            <td>
-                                <p>{{amount_formatted($data->currency, $data->sub_total)}}</p>
+                            <td class="br-left">
+                                <p class="fw-700">Delivery Instructions</p>
+                                <p>Yas Circuit Abu Dhabi</p>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div style="clear: both"></div>
+                <br>
+                <br>
 
-            <!--  -->
+                <div class="end">
+                    @if($data->terms_and_conditions)
+                        <p>{!! $data->terms_and_conditions !!} sd</p>
+                    @else
+                        <p>{!! $data->setting->terms_and_conditions !!} aw</p>
+                    @endif
+                </div>
+                <br>
+                <br>
+            </htmlpagefooter>
+
             <!--End of subpage-->
         </div>
     </div>

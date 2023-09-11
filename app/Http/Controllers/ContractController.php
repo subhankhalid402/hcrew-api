@@ -166,6 +166,7 @@ class ContractController extends Controller
                             'hours_worked' => $Job->hours_in_day,
                             'job_detail_id' => $JobDetail->id,
                             'rate_per_day' => $Job->rate_per_day,
+                            'subtotal_payment' => $Job->rate_per_day,
                             'overtime_hours' => $Job->double_shift_starts_hours,
                             'double_shift' => $Job->has_double_shift,
                             'overtime_hours_rate' => $Job->overtime_rate_per_hour,
@@ -222,22 +223,31 @@ class ContractController extends Controller
             'margin_top' => 0
         ])->save(public_path() . '/uploads/invoice_pdf/contract_invoice/' . $file_name);
 
-        $invoiceMailData = [
-            'to_name' => $Contract->title,
-            'to_email' => $Contract->client->email,
-            'subject' => 'Work Invoice by SUMSOLS Corporation',
-            'file_name' => $file_name,
-            'file_path' => public_path() . '/uploads/invoice_pdf/contract_invoice/' . $file_name,
-            'invoice_public_url' => env('BASE_URL') . 'invoices/' . $request->id . '/public-view'
-        ];
-        Notification::route('mail', $invoiceMailData['to_email'])
-            ->notify(new InvoiceNotification($invoiceMailData));
+//        $invoiceMailData = [
+//            'to_name' => $Contract->title,
+//            'to_email' => $Contract->client->email,
+//            'subject' => 'Work Invoice by SUMSOLS Corporation',
+//            'file_name' => $file_name,
+//            'file_path' => public_path() . '/uploads/invoice_pdf/contract_invoice/' . $file_name,
+//            'invoice_public_url' => env('BASE_URL') . 'invoices/' . $request->id . '/public-view'
+//        ];
+//        Notification::route('mail', $invoiceMailData['to_email'])
+//            ->notify(new InvoiceNotification($invoiceMailData));
 
+        $file_path = env('BASE_URL') . 'public/uploads/invoice_pdf/contract_invoice/' . $file_name;
         return response()->json([
             'status' => true,
-            'message' => 'Invoice Send Successfully'
+            'message' => 'Invoice Send Successfully',
+            'file_path'  =>$file_path
         ]);
 
+    }
+
+    public function getContract(){
+        return response()->json([
+            'status' => true,
+            'data' => Contract::all()
+        ]);
     }
 
 }

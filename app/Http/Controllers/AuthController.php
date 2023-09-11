@@ -43,7 +43,7 @@ class AuthController extends Controller
         //     $Role->where('key', $client);
         // })->first();
 
-        $User = User::where('email', $request->email)->first();
+        $User = User::with('role')->where('email', $request->email)->first();
 
 
         // check if User exist or not
@@ -70,7 +70,8 @@ class AuthController extends Controller
                 'code' => 200,
                 'message' => 'Logged in',
                 'token' => ['token' => $token],
-                'user' => $User
+                'user' => $User,
+                'roleKey' => $User->role->role_key
             ])->header('Cache-Control', 'private')->header('Authorization', $token);
         } else {
             return response()->json([
@@ -321,15 +322,14 @@ class AuthController extends Controller
 
         $Setting = Setting::find(1);
 
-
         if (!empty($Setting)) {
-
             $Setting->company_name = $request->company_name;
             $Setting->address = $request->address;
             $Setting->phone_no = $request->phone_no;
             $Setting->phone_no_2 = $request->phone_no_2;
             $Setting->email = $request->email;
             $Setting->website = $request->website;
+            $Setting->terms_and_conditions = $request->terms_and_conditions;
 
             if($logo && $signature_logo){
                 $logo_name = Str::random(10) . '.' . $logo->getClientOriginalExtension();

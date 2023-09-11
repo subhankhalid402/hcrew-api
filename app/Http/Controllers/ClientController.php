@@ -84,7 +84,7 @@ class ClientController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data' => Client::with('currency', 'client_category')->get()
+            'data' => Client::with('currency', 'client_category')->latest()->get()
         ]);
     }
 

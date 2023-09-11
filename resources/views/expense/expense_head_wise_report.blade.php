@@ -158,7 +158,7 @@
                             <td><?php echo $exp['notes']; ?></td>
                             <td><?php echo $exp['employee']['first_name']; ?></td>
                             <td><?php echo $exp['created_user']['username']; ?></td>
-                            <td><?php echo $exp['amount'] + 0; ?></td>
+                            <td><?php echo $exp['amount_formatted'] ; ?></td>
                             <?php
                             echo "<td style='color:red' class='remove' exp_id=$id>Delete</td>";
                             ?>
@@ -168,14 +168,14 @@
                     ?>
                     <tr>
                         <td class="total" colspan="6">Total:</td>
-                        <td class="totalprice" colspan="2"><?php echo $totalprice ?>/-</td>
+                        <td class="totalprice" colspan="2"><?php echo number_format($totalprice, 2, '.', ',') ?>/-</td>
                     </tr>
                     <?php
                 }
                 ?>
                 <tr>
                     <td class="total" colspan="6">Grand Total:</td>
-                    <td class="totalprice" colspan="2"><?php echo $GrandTotal ?>/-</td>
+                    <td class="totalprice" colspan="2"><?php echo number_format($GrandTotal, 2, '.', ','); ?>/-</td>
                 </tr>
                 <?php
             }

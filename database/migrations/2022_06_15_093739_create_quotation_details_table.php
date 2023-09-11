@@ -15,11 +15,18 @@ class CreateQuotationDetailsTable extends Migration
     {
         Schema::create('quotation_details', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('quotation_id')->constrained();
-            $table->date('from_date');
-            $table->date('to_date');
+            $table->date('from_date')->nullable();
+            $table->date('to_date')->nullable();
             $table->text('description')->nullable();
-            $table->decimal('amount', '9' ,'2')->default(0);
+            $table->integer('quantity')->nullable();
+            $table->decimal('unit_price', '9', '2')->default(0)->nullable();
+            $table->decimal('amount', '9', '2')->default(0);
+            $table->string('vat')->nullable();
+            $table->decimal('vat_amount', '9', '2')->default(0)->nullable();
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

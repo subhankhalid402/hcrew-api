@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use App\Models\Employee;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class EmployeeController extends Controller
 {
@@ -30,7 +28,7 @@ class EmployeeController extends Controller
 //            'dob' => 'required',
         ]);
 
-        if ($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => $validator->errors()->first()
@@ -38,12 +36,12 @@ class EmployeeController extends Controller
         }
 
         $picture = $request->file('picture');
-            if ($picture) {
-                $picture_name = Str::random(10) . '.' . $picture->getClientOriginalExtension();
-                $picture->move(public_path('uploads/employee'), $picture_name);
-            } else {
-                $picture_name = '';
-            }
+        if ($picture) {
+            $picture_name = Str::random(10) . '.' . $picture->getClientOriginalExtension();
+            $picture->move(public_path('uploads/employee'), $picture_name);
+        } else {
+            $picture_name = '';
+        }
         $Employee = Employee::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,

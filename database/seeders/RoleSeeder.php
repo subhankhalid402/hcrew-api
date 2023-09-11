@@ -14,12 +14,12 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $ClientCategory = array(
+        $Role = array(
             array('id' => '1','name' => 'super admin','role_key' => 'superadmin'),
             array('id' => '2','name' => 'admin','role_key' => 'admin'),
         );
 
 
-        Role::insert($ClientCategory);
+        Role::insert($Role);
     }
 }

@@ -17,9 +17,10 @@ class CreateIncomesTable extends Migration
             $table->id();
 
             $table->foreignId('income_head_id')->nullable()->constrained();
-            $table->decimal('amount', '9', '2')->default(0);
-            $table->foreignId('employee_id')->nullable()->constrained();
+            $table->foreignId('client_id')->nullable()->constrained();
+            $table->foreignId('contract_id')->nullable()->constrained();
             $table->foreignId('created_by')->constrained('users', 'id');
+            $table->decimal('amount', '9', '2')->default(0);
             $table->date('date')->nullable();
             $table->text('notes')->nullable();
 

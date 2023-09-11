@@ -12,7 +12,10 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "mpdf/mpdf": "^8.1"
+        "milon/barcode": "^8.0",
+        "mpdf/mpdf": "^8.1",
+        "picqer/php-barcode-generator": "^2.2",
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

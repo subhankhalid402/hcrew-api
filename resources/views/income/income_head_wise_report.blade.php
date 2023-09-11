@@ -117,7 +117,7 @@
                 <td style="width: 80px;text-align:center">Date</td>
                 <td style="width: 250px;">Income Head</td>
                 <td style="width: 300px;">Title</td>
-                <td style="width: 100px;text-align:center">Employee</td>
+                <td style="width: 100px;text-align:center">Client</td>
                 <td style="width: 100px;text-align:center">Created By</td>
                 <td style="width: 80px;">Amount</td>
                 <td style="width: 80px;">Action</td>
@@ -156,9 +156,9 @@
                             <td><?php echo $in['income_date_formatted']; ?></td>
                             <td><?php echo $in['income_head']['name']; ?></td>
                             <td><?php echo $in['notes']; ?></td>
-                            <td><?php echo $in['employee']['first_name']; ?></td>
+                            <td><?php echo $in['client']['name']; ?></td>
                             <td><?php echo $in['created_user']['username']; ?></td>
-                            <td><?php echo $in['amount'] + 0; ?></td>
+                            <td><?php echo $in['amount_formatted']; ?></td>
                             <?php
                             echo "<td style='color:red' class='remove' in_id=$id>Delete</td>";
                             ?>
@@ -168,14 +168,14 @@
                     ?>
                     <tr>
                         <td class="total" colspan="6">Total:</td>
-                        <td class="totalprice" colspan="2"><?php echo $totalprice ?>/-</td>
+                        <td class="totalprice" colspan="2"><?php echo number_format($totalprice, 2, '.', ',') ?>/-</td>
                     </tr>
                     <?php
                 }
                 ?>
                 <tr>
                     <td class="total" colspan="6">Grand Total:</td>
-                    <td class="totalprice" colspan="2"><?php echo $GrandTotal ?>/-</td>
+                    <td class="totalprice" colspan="2"><?php echo number_format($GrandTotal, 2, '.', ','); ?>/-</td>
                 </tr>
                 <?php
             }

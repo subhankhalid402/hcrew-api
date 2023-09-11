@@ -13,7 +13,7 @@ class Income extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['income_date_formatted', 'month'];
+    protected $appends = ['income_date_formatted', 'month', 'amount_formatted'];
 
     public function getIncomeDateFormattedAttribute()
     {
@@ -28,9 +28,9 @@ class Income extends Model
         return $this->belongsTo(IncomeHead::class);
     }
 
-    public function employee()
+    public function client()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Client::class);
     }
 
     public function created_user()
@@ -41,5 +41,14 @@ class Income extends Model
     public function getMonthAttribute()
     {
         return Carbon::parse($this->date)->format('Y-m');
+    }
+
+    public function attachment(){
+        return $this->hasOne(Attachment::class, 'object_id', 'id')->where('object', 'Income');
+    }
+
+    public function getAmountFormattedAttribute()
+    {
+        return SiteHelper::amountFormatter($this->amount);
     }
 }
