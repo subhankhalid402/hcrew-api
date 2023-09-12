@@ -5,20 +5,22 @@ namespace App\Models;
 use App\Helpers\SiteHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Quotation extends Model
+class Invoice extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $guarded = [];
-
     protected $appends = ['setting', 'file_url', 'total_amount_formatted', 'created_at_formatted'];
 
     public function details()
     {
-        return $this->hasMany(QuotationDetail::class, 'quotation_id', 'id');
+        return $this->hasMany(InvoiceDetail::class, 'invoice_id', 'id');
+    }
+
+    public function quotation()
+    {
+        return $this->belongsTo(Quotation::class);
     }
 
     public function getSettingAttribute()
@@ -38,7 +40,7 @@ class Quotation extends Model
 
     public function getFileUrlAttribute()
     {
-        return asset('upload/quotation/attachment/');
+        return asset('upload/invoice/attachment/');
     }
 
     public function get_created_by()

@@ -145,6 +145,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{id}/delete', [QuotationController::class, 'destroy']);
         Route::post('quotation-detail/{id}/delete', [QuotationController::class, 'quotationDetailDestroy']);
         Route::post('send-email', [QuotationController::class, 'sendEmail']);
+        Route::post('convert-to-invoice', [QuotationController::class, 'convertToInvoice']);
         Route::post('{id}/attach-delete', [QuotationController::class, 'attachmentDestroy']);
     });
 

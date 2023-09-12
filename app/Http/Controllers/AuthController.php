@@ -339,11 +339,6 @@ class AuthController extends Controller
 
                 $Setting->logo = $logo_name;
                 $Setting->signature = $signature_logo_name;
-            }else{
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Select Image'
-                ]);
             }
 
             $Setting->save();
